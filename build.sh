@@ -12,6 +12,8 @@ do
     fi
 done
 
+mkdir 'build'
+
 ./build-html.php
 ./syncMovies.sh
 ./build-thumbnail.sh

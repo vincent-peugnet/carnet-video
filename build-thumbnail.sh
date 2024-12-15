@@ -10,11 +10,11 @@ newLineIfFirst() {
 echo -ne "🗜️  \033[1mmissing thumbnails or video files\033[0m"
 
 rm -rf /tmp/carnet-video
-mkdir /tmp/carnet-video
-mkdir /tmp/carnet-video/thumbnail
-mkdir /tmp/carnet-video/clip
+mkdir -p /tmp/carnet-video/thumbnail
+mkdir -p /tmp/carnet-video/clip
 
 mkdir -p build/assets/thumbnail
+mkdir -p build/assets/clip
 
 counter=0
 
@@ -25,7 +25,7 @@ do
 
     if test ! -f "build/assets/thumbnail/$id.webp"
     then
-        ffmpeg -hide_banner -loglevel error -i "$clip" -ss 00:00:00 -vf "scale='trunc(ih*dar):ih',setsar=1/1" -frames:v 1 "/tmp/carnet-video/thumbnail/$id.png"
+        ffmpeg -hide_banner -loglevel error -ss 00:00:00 -i "$clip" -vf "scale='300:trunc(300/dar)',setsar=1/1" -frames:v 1 "/tmp/carnet-video/thumbnail/$id.png"
         convert /tmp/carnet-video/thumbnail/$id.png -thumbnail 300x300 "/tmp/carnet-video/thumbnail/$id.webp"
         mv "/tmp/carnet-video/thumbnail/$id.webp" "build/assets/thumbnail/$id.webp"
         newLineIfFirst
@@ -36,7 +36,7 @@ do
     if test ! -f "build/assets/thumbnail/$id.gif"
     then
         mkdir /tmp/carnet-video/thumbnail/$id
-        ffmpeg -hide_banner -loglevel error -i "$clip" -r 0.5 -vf "scale='300:trunc(300/dar)',setsar=1/1" /tmp/carnet-video/thumbnail/$id/%04d.gif
+        ffmpeg -hide_banner -loglevel error -ss 00:00:00 -to 00:00:30 -i "$clip" -r 0.5 -vf "scale='300:trunc(300/dar)',setsar=1/1" /tmp/carnet-video/thumbnail/$id/%04d.gif
         gifsicle --delay=20 --optimize --optimize  /tmp/carnet-video/thumbnail/$id/*.gif > /tmp/carnet-video/thumbnail/$id.gif
         mv "/tmp/carnet-video/thumbnail/$id.gif" "build/assets/thumbnail/$id.gif"
         newLineIfFirst

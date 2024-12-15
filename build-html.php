@@ -1,6 +1,18 @@
 #!/usr/bin/env php
 <?php
 
+/**
+ * Delete folder and all it's content
+ */
+function delTree(string $dir)
+{
+    $files = array_diff(scandir($dir), array('.', '..'));
+    foreach ($files as $file) {
+        (is_dir("$dir/$file")) ? delTree("$dir/$file") : unlink("$dir/$file");
+    }
+    return rmdir($dir);
+}
+
 require('./vendor/autoload.php');
 $templates = new League\Plates\Engine('generator/templates');
 $templates->addData(['stylesheet' => null]);
@@ -17,6 +29,7 @@ foreach ($paths as $path) {
     $id = basename($path);
     $collections[$id] = array_unique(file("src/collections/$id", FILE_IGNORE_NEW_LINES));
 }
+ksort($collections);
 
 /** @var array[] $collectionsIndex associative array where key is clip int ID and value is list of collections string IDs */
 $collectionsIndex = [];
@@ -32,7 +45,7 @@ foreach ($collections as $collection => $clips) {
 /** @var string[] $tags Associative array where key is string ID and value is exactly the same */
 $tags = file('src/allowedTags', FILE_IGNORE_NEW_LINES);
 $tags = array_combine($tags, $tags);
-
+ksort($tags);
 
 // MOVIES
 
@@ -45,7 +58,7 @@ foreach ($paths as $path) {
     $movie['id'] = $id;
     $movies[$id] = $movie;
 }
-
+ksort($movies);
 
 
 // CLIPS
@@ -59,7 +72,7 @@ foreach ($paths as $path) {
     $clip['id'] = $id;
     $clips[$id] = $clip;
 }
-
+ksort($clips);
 
 
 
@@ -68,9 +81,18 @@ foreach ($paths as $path) {
 
 // GENERATOR _____________________________________________________
 
-function buildClips(array $clips, array $collectionsIndex, array $movies) : void
+function removeHtmlBuild(): void
+{
+    delTree('build/clip');
+    delTree('build/collection');
+    delTree('build/movie');
+    delTree('build/tag');
+}
+
+function buildClips(array $clips, array $collectionsIndex, array $movies): void
 {
     global $templates;
+    mkdir('build/clip');
     foreach ($clips as $id => $clip) {
         $collections = isset($collectionsIndex[$id]) ? $collectionsIndex[$id] : [];
         $movie = isset($clip['movie']) && isset($movies[$clip['movie']]) ? $movies[$clip['movie']] : null;
@@ -90,6 +112,7 @@ function buildClips(array $clips, array $collectionsIndex, array $movies) : void
 function buildTags(array $tags, array $clips): void
 {
     global $templates;
+    mkdir('build/tag');
     foreach ($tags as $tag) {
         $filteredClips = [];
         foreach ($clips as $id => $clip) {
@@ -103,7 +126,7 @@ function buildTags(array $tags, array $clips): void
         }
         file_put_contents("build/tag/$tag/index.html", $html);
     }
-    
+
     $html = $templates->render('tagIndex', ['tags' => $tags]);
     file_put_contents("build/tag/index.html", $html);
 }
@@ -111,8 +134,9 @@ function buildTags(array $tags, array $clips): void
 
 function buildCollections(array $collections): void
 {
+    global $templates;
+    mkdir('build/collection');
     foreach ($collections as $collection => $clips) {
-        global $templates;
         $html = $templates->render('collection', ['collection' => $collection, 'clips' => $clips]);
         if (!is_dir("build/collection/$collection")) {
             mkdir("build/collection/$collection", 0777, true);
@@ -125,9 +149,10 @@ function buildCollections(array $collections): void
 }
 
 
-function buildMovies(array $movies, array $clips) : void
+function buildMovies(array $movies, array $clips): void
 {
     global $templates;
+    mkdir('build/movie');
     foreach ($movies as $id => $movie) {
         $filteredClips = array_filter($clips, function ($clip) use ($id): bool {
             return isset($clip['movie']) && $clip['movie'] === $id;
@@ -137,12 +162,13 @@ function buildMovies(array $movies, array $clips) : void
             mkdir("build/movie/$id", 0777, true);
         }
         file_put_contents("build/movie/$id/index.html", $html);
-    }    
+    }
     $html = $templates->render('movieIndex', ['movies' => $movies]);
     file_put_contents("build/movie/index.html", $html);
 }
 
-
+removeHtmlBuild();
+print '.';
 buildClips($clips, $collectionsIndex, $movies);
 print '.';
 buildTags($tags, $clips);
