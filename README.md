@@ -12,6 +12,7 @@ See [CAPTURE.md](CAPTURE.md), for more info about this part.
     - composer
         - [plates](https://platesphp.com/)
 - ffmpeg
+- mediainfo
 - gifsicle
 - imagemagick
 - jq
@@ -25,7 +26,11 @@ All scripts at the root of directory should have execution permission (including
 
 Write the TMDB API token in a file called `TMDBapiToken`
 
+### encoding
 
+Quality setting for video is hardcoded.
+Resolution output depend on aspect ratio.
+video with aspect ratio under 2 are encoded to 480p and above use 576p
 
 ## Usage
 

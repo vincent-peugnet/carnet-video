@@ -47,7 +47,15 @@ do
 
     if test ! -f "build/assets/clip/$id.webm"
     then
-        ffmpeg -hide_banner -loglevel error -i "$clip" -vf scale=854:-2 -c:v libvpx -crf 10 -b:v 800k -b:a 64k /tmp/carnet-video/clip/$id.webm
+        ar=$(mediainfo --Inform="Video;%DisplayAspectRatio%" $clip)
+        if [[ $ar == 2* ]]
+        then
+            width=1024
+        else
+            width=854
+        fi
+
+        ffmpeg -hide_banner -loglevel error -i "$clip" -vf "scale='$width:trunc($width/dar)',setsar=1/1" -c:v libvpx -crf 10 -b:v 1500k -crf 30 -b:a 64k /tmp/carnet-video/clip/$id.webm
         mv /tmp/carnet-video/clip/$id.webm build/assets/clip/$id.webm
         newLineIfFirst
         echo "🎞️ generated compressed video for clip #$id"
