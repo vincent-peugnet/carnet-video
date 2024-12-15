@@ -1,0 +1,4 @@
+TMDBapiToken
+build/*
+src/*
+vendor/*
