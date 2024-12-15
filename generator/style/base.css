@@ -24,17 +24,23 @@ nav a {
     margin: 7px;
 }
 
-main {
-    max-width: 915px;
+header, nav {
+    display: inline-block;
+    margin-right: 20px;
 }
 
-li {
-    margin: 5px;
+main {
+    max-width: 915px;
 }
 
 ul.clips {
     column-count: 3;
     column-gap: 0;
+}
+
+ul.clips li {
+    margin-right: 10px;
+    margin-bottom: 5px;
 }
 
 ul.clips li a {
@@ -90,3 +96,32 @@ div.tags a {
     margin: 7px;
 }
 
+main video {
+    width: 100%;
+    max-width: 854px;
+}
+
+
+
+
+/** MEDIA QUERIES */
+
+@media (max-width: 1000px) {
+    ul.clips {
+        column-count: 2;
+    }
+    
+    main {
+        max-width: 610px;
+    }
+
+    header, nav {
+        display: block;
+    }
+}
+
+@media (max-width: 670px) {
+    ul.clips {
+        column-count: 1;
+    }
+}

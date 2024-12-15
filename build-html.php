@@ -1,14 +1,10 @@
+#!/usr/bin/env php
 <?php
 
 require('./vendor/autoload.php');
 $templates = new League\Plates\Engine('generator/templates');
 
-function stdout(string $output)
-{
-    fwrite(STDOUT, "$output\n");
-}
-
-stdout('🚀 building HTML');
+print "🚀 \033[1mbuilding HTML\033[0m";
 
 // COLLECTIONS
 
@@ -146,16 +142,25 @@ function buildMovies(array $movies, array $clips) : void
 
 
 buildClips($clips, $collectionsIndex, $movies);
+print '.';
 buildTags($tags, $clips);
+print '.';
 buildCollections($collections);
+print '.';
 buildMovies($movies, $clips);
+print '.';
 
 
 $html = $templates->render('home');
 file_put_contents("build/index.html", $html);
+print '.';
 
 
 if (!is_dir("build/assets")) {
     mkdir("build/assets");
 }
 copy('generator/style/base.css', 'build/assets/base.css');
+print '.';
+
+
+print "done!\n";

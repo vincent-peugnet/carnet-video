@@ -1,7 +1,9 @@
 # C clip carnet
 
-Movie clip notebook
+Movie clip notebook static site generator.
 
+It goes allong with some scripts to capture the video clips from movies.
+See [CAPTURE.md](CAPTURE.md), for more info about this part.
 
 ## Dependencies
 
@@ -15,6 +17,14 @@ Movie clip notebook
 - jq
 - timg (optionnal)
 - [TMDB](https://www.themoviedb.org/) account (for movie API)
+
+
+## Setup
+
+All scripts at the root of directory should have execution permission (including the PHP one)
+
+Write the TMDB API token in a file called `TMDBapiToken`
+
 
 
 ## Usage
@@ -39,7 +49,7 @@ The generator build from `src` dir to `build` dir. This setting is hardcoded.
 ```
 
 Movie ID used is the official TMDB id.
-The `src/movies` folder is automatically populated during building. 
+The `src/movies` folder is automatically populated during building.
 
 To lauch the build:
 

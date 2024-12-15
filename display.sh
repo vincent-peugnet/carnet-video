@@ -3,7 +3,12 @@
 
 clipId=$1
 
-movieId=$(cat src/clips/$1.json | jq .movie)
+if test ! -f src/clips/$1.json
+then
+    cp generator/clip.json src/clips/$1.json
+fi
+
+movieId=$(cat src/clips/$1.json | jq -e .movie)
 description=$(cat src/clips/$1.json | jq -r .description)
 tags=$(cat src/clips/$1.json | jq -r  .tags | jq -r 'join(" ")')
 collections=()
