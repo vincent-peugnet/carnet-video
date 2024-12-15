@@ -28,6 +28,14 @@
             </a>
         </div>
     <?php endif ?>
+    <?php if ($aspectRatio !== null) : ?>
+        <div class="aspectRatio">
+            <h2>AR</h2>
+            <a href="/ar/<?= $aspectRatio->slug ?>/">
+                <?= $aspectRatio->ratio ?>
+            </a>
+        </div>
+    <?php endif ?>
     <div class="collections">
         <h2>Collections</h2>
         <ul>

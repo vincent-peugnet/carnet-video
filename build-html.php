@@ -1,20 +1,25 @@
 #!/usr/bin/env php
 <?php
 
+use Carnet\AspectRatio;
+use League\Plates\Engine;
+
 /**
  * Delete folder and all it's content
  */
 function delTree(string $dir)
 {
-    $files = array_diff(scandir($dir), array('.', '..'));
-    foreach ($files as $file) {
-        (is_dir("$dir/$file")) ? delTree("$dir/$file") : unlink("$dir/$file");
+    if (is_dir($dir)) {   
+        $files = array_diff(scandir($dir), array('.', '..'));
+        foreach ($files as $file) {
+            (is_dir("$dir/$file")) ? delTree("$dir/$file") : unlink("$dir/$file");
+        }
+        return rmdir($dir);
     }
-    return rmdir($dir);
 }
 
 require('./vendor/autoload.php');
-$templates = new League\Plates\Engine('generator/templates');
+$templates = new Engine('generator/templates');
 $templates->addData(['stylesheet' => null]);
 
 
@@ -46,6 +51,21 @@ foreach ($collections as $collection => $clips) {
 $tags = file('src/allowedTags', FILE_IGNORE_NEW_LINES);
 $tags = array_combine($tags, $tags);
 ksort($tags);
+
+// ASPECT RATIO
+
+/** @var float[] $aspectRatios */
+$ratios = file('src/allowedAspectRatios', FILE_IGNORE_NEW_LINES);
+$ratios = array_map(function($ratio) : float {
+    return floatval($ratio);
+}, $ratios);
+sort($ratios);
+
+foreach ($ratios as $i => $ratio) {
+    $prev = isset($ratios[$i - 1]) ? $ratios[$i - 1] : 0;
+    $next = isset($ratios[$i + 1]) ? $ratios[$i + 1] : 10;
+    $aspectRatios[] = new AspectRatio($ratio, $prev, $next);
+}
 
 // MOVIES
 
@@ -87,16 +107,29 @@ function removeHtmlBuild(): void
     delTree('build/collection');
     delTree('build/movie');
     delTree('build/tag');
+    delTree('build/ar');
 }
 
-function buildClips(array $clips, array $collectionsIndex, array $movies): void
+/**
+ * @param AspectRatio[] $aspectRatios
+ */
+function buildClips(array $clips, array $collectionsIndex, array $movies, array $aspectRatios): void
 {
     global $templates;
     mkdir('build/clip');
     foreach ($clips as $id => $clip) {
         $collections = isset($collectionsIndex[$id]) ? $collectionsIndex[$id] : [];
         $movie = isset($clip['movie']) && isset($movies[$clip['movie']]) ? $movies[$clip['movie']] : null;
-        $html = $templates->render('clip', ['id' => $id, 'clip' => $clip, 'collections' => $collections, 'movie' => $movie]);
+        if (isset($clip['ar'])) {
+            foreach ($aspectRatios as $aspectRatio) {
+                if ($aspectRatio->isInRange($clip['ar'])) {
+                    $matchedAspectRatio = $aspectRatio;
+                }
+            }
+        } else {
+            $matchedAspectRatio = null;
+        }
+        $html = $templates->render('clip', ['id' => $id, 'clip' => $clip, 'collections' => $collections, 'movie' => $movie, 'aspectRatio' => $matchedAspectRatio]);
         if (!is_dir("build/clip/$id")) {
             mkdir("build/clip/$id", 0777, true);
         }
@@ -129,6 +162,35 @@ function buildTags(array $tags, array $clips): void
 
     $html = $templates->render('tagIndex', ['tags' => $tags]);
     file_put_contents("build/tag/index.html", $html);
+}
+
+/**
+ * @param AspectRatio[] $aspectRatios
+ */
+function buildAspectRatios(array $aspectRatios, array $clips) : void
+{
+    global $templates;
+    mkdir('build/ar');
+    foreach ($aspectRatios as $aspectRatio) {
+        $filteredClips = [];
+        foreach ($clips as $id => $clip) {
+            if ($aspectRatio->isInRange($clip['ar'])) {
+                $filteredClips[] = $clip;
+                unset($clip[$id]);
+            }
+        }
+        if (empty($filteredClips)) {
+            continue;
+        }
+        $html = $templates->render('aspectRatio', ['aspectRatio' => $aspectRatio, 'clips' => $filteredClips]);
+        $filteredAspectRatios[] = $aspectRatio;
+        if (!is_dir("build/ar/$aspectRatio->slug")) {
+            mkdir("build/ar/$aspectRatio->slug");
+        }
+        file_put_contents("build/ar/$aspectRatio->slug/index.html", $html);
+    }
+    $html = $templates->render('aspectRatioIndex', ['aspectRatios' => $filteredAspectRatios]);
+    file_put_contents("build/ar/index.html", $html);
 }
 
 
@@ -169,13 +231,15 @@ function buildMovies(array $movies, array $clips): void
 
 removeHtmlBuild();
 print '.';
-buildClips($clips, $collectionsIndex, $movies);
+buildClips($clips, $collectionsIndex, $movies, $aspectRatios);
 print '.';
 buildTags($tags, $clips);
 print '.';
 buildCollections($collections);
 print '.';
 buildMovies($movies, $clips);
+print '.';
+buildAspectRatios($aspectRatios, $clips);
 print '.';
 
 

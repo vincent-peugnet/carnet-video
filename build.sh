@@ -12,7 +12,7 @@ do
     fi
 done
 
-mkdir 'build'
+mkdir -p 'build'
 
 ./build-html.php
 ./syncMovies.sh

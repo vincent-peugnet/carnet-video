@@ -8,4 +8,5 @@
     <a href="/tag/">tags</a>
     <a href="/collection/">collections</a>
     <a href="/movie/">movies</a>
+    <a href="/ar/">ar</a>
 </nav>
