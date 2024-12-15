@@ -1,6 +1,6 @@
 <?php
     $title = "index";
-    $this->layout('layout', ['stylesheet' => 'index.css', 'title' => $title]);
+    $this->layout('layout', ['title' => $title]);
 ?>
 
 <?php $this->start('main') ?>

@@ -1,6 +1,6 @@
 <?php
     $title = "tag $tag";
-    $this->layout('layout', ['stylesheet' => 'tag.css', 'title' => $title]);
+    $this->layout('layout', ['title' => $title]);
 ?>
 
 <?php $this->start('main') ?>

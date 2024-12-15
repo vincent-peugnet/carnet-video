@@ -1,6 +1,6 @@
 <?php
     $title = "clip $id";
-    $this->layout('layout', ['stylesheet' => 'clip.css', 'title' => $title]);
+    $this->layout('layout', ['title' => $title]);
 ?>
 
 <?php $this->start('main') ?>

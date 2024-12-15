@@ -3,6 +3,8 @@
 
 require('./vendor/autoload.php');
 $templates = new League\Plates\Engine('generator/templates');
+$templates->addData(['stylesheet' => null]);
+
 
 print "🚀 \033[1mbuilding HTML\033[0m";
 

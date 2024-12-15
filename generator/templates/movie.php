@@ -1,6 +1,6 @@
 <?php
     $title = $movie['title'];
-    $this->layout('layout', ['stylesheet' => 'tag.css', 'title' => $title]);
+    $this->layout('layout', ['title' => $title]);
 ?>
 
 <?php $this->start('main') ?>

@@ -1,5 +1,3 @@
-
-
 <html>
     <?=$this->insert('head', ['stylesheet' => $stylesheet, 'title' => $title])?>
     <body>
