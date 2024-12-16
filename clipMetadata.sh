@@ -9,7 +9,7 @@ fi
 
 clip="src/clips/$1.mkv"
 
-ar=$(mediainfo --Inform="Video;%DisplayAspectRatio%" $clip | cut -c -4)
+aspectRatio=$(mediainfo --Inform="Video;%DisplayAspectRatio%" $clip | cut -c -4)
 d=$(mediainfo --Inform="General;%Duration%" $clip | sed 's/.\{3\}$//')
 
 
@@ -18,7 +18,7 @@ then
     cp generator/clip.json src/clips/$1.json
 fi
 
-json=$(jq --arg ar "$ar" --arg d "$d" '.duration = $d | .ar = $ar | .ar |= tonumber | .duration |= tonumber' src/clips/$1.json)
+json=$(jq --arg aspectRatio "$aspectRatio" --arg d "$d" '.duration = $d | .aspectRatio = $aspectRatio | .aspectRatio |= tonumber | .duration |= tonumber' src/clips/$1.json)
 
 echo "$json" > src/clips/$1.json
 echo '💾 updated'
