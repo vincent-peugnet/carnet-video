@@ -13,8 +13,8 @@ clear
 
 if test ! -f src/clips/$1.json
 then
-    ./clipMetadata.sh $1
-    if test $? != 0
+    ./clipMetadata.sh $1 # try to create JSON file if MKV exist
+    if test $? != 0      # this mean clipMetadata failed, (no MKV an no JSON)
     then
         echo -e "\e[37m[←]prev [→]next [↑]id\e[0m"
         escape_char=$(printf "\u1b")

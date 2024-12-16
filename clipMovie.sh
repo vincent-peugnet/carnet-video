@@ -12,9 +12,11 @@ then
     exit 1
 fi
 
+clear
+
 echo 'Is it one of the following movies ?'
 
-lastMovieFiles=$(ls -Art src/movies | tail -n 3)
+lastMovieFiles=$(ls -Art src/movies | tail -n 6)
 i=0
 movies=()
 titles=()
@@ -29,20 +31,29 @@ do
     movies+=("$movie")
     let i++
 done
-echo '[ ] Nope ! 👻'
+echo '[ ] Not in the list ! 👻'
 
 
 
 read -rsn1 input # get 1 character
 
 case $input in
-    0|1|2) 
+    0|1|2|3|4|5) 
         echo "Movie: ${titles[$input]}"
         movie="${movies[$input]}"
         ;;
     *)
-        echo "tapez le numéro d'un nouveau film"
+        echo 'What is the movie TMDB identifier ? (press Enter to send, leave empty to abort)'
         read movie
+
+        if test -z "$movie"
+        then
+            echo '❌ cancelling'
+            sleep 0.5
+            ./display $1
+            exit 1
+        fi
+
         echo "📥️ fetching data for movie #$movie"
         apiToken=$(cat TMDBapiToken)
         json=$(curl -s --request GET \
