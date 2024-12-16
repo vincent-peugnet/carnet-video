@@ -14,6 +14,8 @@ fi
 
 clear
 
+echo "Select movie for clip #$1"
+echo '========================='
 echo 'Is it one of the following movies ?'
 
 lastMovieFiles=$(ls -Art src/movies | tail -n 6)
@@ -50,45 +52,33 @@ case $input in
         then
             echo '❌ cancelling'
             sleep 0.5
-            ./display $1
             exit 1
         fi
 
-        echo "📥️ fetching data for movie #$movie"
-        apiToken=$(cat config/TMDBapiToken)
-        json=$(curl -s --request GET \
-            --url "https://api.themoviedb.org/3/movie/$movie" \
-            --header "Authorization: Bearer $apiToken")
-
-        success=$(echo "$json" | jq -r .success)
-        if test "$success" != 'false'
+        if test -f "src/movies/$movie.json" # If the movie is not already imported
         then
-            title=$(echo "$json" | jq -r '.title')
-            release_date=$(echo "$json" | jq -r '.release_date')
-            year=${release_date::4}
-
+            echo '📦️ movie is already imported'
+            title=$(jq -r .title src/movies/$movie.json)
+            year=$(jq -r .year src/movies/$movie.json)
             echo "$title - $year"
 
             echo 'confirmation ? [y]/n'
             read -rsn1 input
-            if test $input = 'n'
+            if test "$input" = 'n'
             then
                 echo '❌ aborted'
-                sleep 1
+                sleep 0.5
                 exit 1
             fi
-
-            jq -nc --arg title "$title" --arg year "$year" \
-                '{
-                    title: $title,
-                    year: $year
-                }' >> "src/movies/$movie.json"
         else
-            echo '⛔️ error while trying to fetch movie data on TMDB:'
-            echo "$json" | jq -r .status_message
-            exit 1
+            ./fetchMovie.sh "$movie"
+
+            if test $? != 0
+            then
+                exit 1
+            fi
         fi
-        ;;
+    ;;
 esac
 
 
@@ -96,4 +86,5 @@ clip=$(jq --arg movie "$movie" '.movie = $movie' src/clips/$1.json)
 echo "$clip" | jq '.movie |= tonumber' > "src/clips/$1.json"
 
 echo '💾 updated'
-sleep 1
+sleep 0.5
+exit 0
