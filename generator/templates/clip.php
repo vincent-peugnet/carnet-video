@@ -1,5 +1,5 @@
 <?php
-    $title = "clip $id";
+    $title = "clip $clip->id";
     $this->layout('layout', ['title' => $title]);
 ?>
 
@@ -7,15 +7,15 @@
     <h1>
         <a href="/clip/">clip</a>
         >
-        <span># <?= $id ?></span>
+        <span># <?= $clip->id ?></span>
     </h1>
     <video muted controls autoplay loop>
-        <source src="/assets/clip/<?= $id ?>.webm" type="video/webm" />
+        <source src="/assets/clip/<?= $clip->id ?>.webm" type="video/webm" />
     </video>
-    <p><?= $clip['description'] ?></p>
+    <p><?= $clip->description ?></p>
     <div class="tags">
         <h2>Tags</h2>
-        <?php foreach ($clip['tags'] as $tag) : ?>
+        <?php foreach ($clip->tags as $tag) : ?>
             <a href="/tag/<?= $tag ?>/"><?= $tag ?></a>
         <?php endforeach ?>
     </div>

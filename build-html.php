@@ -2,6 +2,7 @@
 <?php
 
 use Carnet\AspectRatio;
+use Carnet\Clip;
 use League\Plates\Engine;
 
 /**
@@ -88,9 +89,8 @@ $clips = [];
 $paths = glob('src/clips/*.json');
 foreach ($paths as $path) {
     $id = intval(basename($path, '.json'));
-    $clip = json_decode(file_get_contents($path), true);
-    $clip['id'] = $id;
-    $clips[$id] = $clip;
+    $json = json_decode(file_get_contents($path), true);
+    $clips[$id] = new Clip($id, $json);
 }
 ksort($clips);
 
@@ -112,6 +112,7 @@ function removeHtmlBuild(): void
 
 /**
  * @param AspectRatio[] $aspectRatios
+ * @param Clip[] $clips
  */
 function buildClips(array $clips, array $collectionsIndex, array $movies, array $aspectRatios): void
 {
@@ -119,17 +120,17 @@ function buildClips(array $clips, array $collectionsIndex, array $movies, array 
     mkdir('build/clip');
     foreach ($clips as $id => $clip) {
         $collections = isset($collectionsIndex[$id]) ? $collectionsIndex[$id] : [];
-        $movie = isset($clip['movie']) && isset($movies[$clip['movie']]) ? $movies[$clip['movie']] : null;
-        if (isset($clip['ar'])) {
+        $movie = $clip->movie !== null && isset($movies[$clip->movie]) ? $movies[$clip->movie] : null;
+        if (($clip->aspectRatio) !== null) {
             foreach ($aspectRatios as $aspectRatio) {
-                if ($aspectRatio->isInRange($clip['ar'])) {
+                if ($aspectRatio->isInRange($clip->aspectRatio)) {
                     $matchedAspectRatio = $aspectRatio;
                 }
             }
         } else {
             $matchedAspectRatio = null;
         }
-        $html = $templates->render('clip', ['id' => $id, 'clip' => $clip, 'collections' => $collections, 'movie' => $movie, 'aspectRatio' => $matchedAspectRatio]);
+        $html = $templates->render('clip', ['clip' => $clip, 'collections' => $collections, 'movie' => $movie, 'aspectRatio' => $matchedAspectRatio]);
         if (!is_dir("build/clip/$id")) {
             mkdir("build/clip/$id", 0777, true);
         }
@@ -141,15 +142,17 @@ function buildClips(array $clips, array $collectionsIndex, array $movies, array 
 }
 
 
-
+/**
+ * @param Clip[] $clips
+ */
 function buildTags(array $tags, array $clips): void
 {
     global $templates;
     mkdir('build/tag');
     foreach ($tags as $tag) {
         $filteredClips = [];
-        foreach ($clips as $id => $clip) {
-            if (in_array($tag, $clip['tags'])) {
+        foreach ($clips as $clip) {
+            if (in_array($tag, $clip->tags)) {
                 $filteredClips[] = $clip;
             }
         }
@@ -166,17 +169,23 @@ function buildTags(array $tags, array $clips): void
 
 /**
  * @param AspectRatio[] $aspectRatios
+ * @param Clip[] $clips
  */
 function buildAspectRatios(array $aspectRatios, array $clips) : void
 {
     global $templates;
     mkdir('build/ar');
+    $filteredAspectRatios = [];
     foreach ($aspectRatios as $aspectRatio) {
         $filteredClips = [];
         foreach ($clips as $id => $clip) {
-            if ($aspectRatio->isInRange($clip['ar'])) {
+            if ($clip->aspectRatio === null) {
+                unset($clips[$id]);
+                continue;                
+            }
+            if ($aspectRatio->isInRange($clip->aspectRatio)) {
                 $filteredClips[] = $clip;
-                unset($clip[$id]);
+                unset($clips[$id]);
             }
         }
         if (empty($filteredClips)) {
@@ -217,7 +226,7 @@ function buildMovies(array $movies, array $clips): void
     mkdir('build/movie');
     foreach ($movies as $id => $movie) {
         $filteredClips = array_filter($clips, function ($clip) use ($id): bool {
-            return isset($clip['movie']) && $clip['movie'] === $id;
+            return isset($clip->movie) && $clip->movie === $id;
         });
         $html = $templates->render('movie', ['movie' => $movie, 'clips' => $filteredClips]);
         if (!is_dir("build/movie/$id")) {
