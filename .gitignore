@@ -2,3 +2,4 @@ TMDBapiToken
 build/*
 src/*
 vendor/*
+config/*

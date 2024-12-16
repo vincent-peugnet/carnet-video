@@ -1,4 +1,4 @@
-# C clip carnet
+# Carnet Video
 
 Movie clip notebook static site generator.
 
@@ -26,11 +26,16 @@ All scripts at the root of directory should have execution permission (including
 
 Write the TMDB API token in a file called `TMDBapiToken`
 
-### encoding
+Create `config` directory.
 
-Quality setting for video is hardcoded.
+Run `composer install`
+
+
+### Encoding
+
+Quality setting for video is hardcoded. in file `build-thumbnail.sh`
 Resolution output depend on aspect ratio.
-video with aspect ratio under 2 are encoded to 480p and above use 576p
+video with aspect ratio under 2 are encoded to 480p and above use 576p.
 
 ## Usage
 
@@ -51,6 +56,7 @@ The generator build from `src` dir to `build` dir. This setting is hardcoded.
         📄 <movieId>.json
         ...
     📄 allowedTags
+    📄 allowedAspectRatios
 ```
 
 Movie ID used is the official TMDB id.
@@ -61,6 +67,19 @@ To lauch the build:
     ./build.sh
 
 This will first generate HTML. Then encode thumnails, gifs, and videos files.
+
+
+### Importing
+
+This programm assumes you have a folder that contain newly captured video file(see [CAPTURE.md](CAPTURE.md)).
+This directory have to be declared in the file `config/importDirectory`.
+The ID of the future clip have to be a valid number in `config/newClip`.
+This number will be auto incremented during each import phase.
+
+To import clip use the follow command:
+
+    ./importClips.sh
+
 
 ### Managing
 
@@ -76,6 +95,7 @@ This is equivalent to use those commands:
     ./clipDescription.sh <ClipID>
     ./clipTags.sh <ClipID>
     ./clipCollections.sh <ClipID>
+    ./clipMovie.sh <ClipID>
 
 To create/edit a collection, it's also possible to use
 
