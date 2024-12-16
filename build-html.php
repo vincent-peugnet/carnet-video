@@ -49,14 +49,14 @@ foreach ($collections as $collection => $clips) {
 // TAGS
 
 /** @var string[] $tags Associative array where key is string ID and value is exactly the same */
-$tags = file('src/allowedTags', FILE_IGNORE_NEW_LINES);
+$tags = file('src/tags', FILE_IGNORE_NEW_LINES);
 $tags = array_combine($tags, $tags);
 ksort($tags);
 
 // ASPECT RATIO
 
 /** @var float[] $aspectRatios */
-$ratios = file('src/allowedAspectRatios', FILE_IGNORE_NEW_LINES);
+$ratios = file('src/aspectRatios', FILE_IGNORE_NEW_LINES);
 $ratios = array_map(function($ratio) : float {
     return floatval($ratio);
 }, $ratios);

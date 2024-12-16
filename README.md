@@ -2,47 +2,73 @@
 
 Movie clip notebook static site generator.
 
+Generate a Web interface for a database of movie clips.
+Management is done thanks to an interactive CLI.
+
 It goes allong with some scripts to capture the video clips from movies.
 See [CAPTURE.md](CAPTURE.md), for more info about this part.
-
-## Dependencies
-
-- bash
-- php
-    - composer
-        - [plates](https://platesphp.com/)
-- ffmpeg
-- mediainfo
-- gifsicle
-- imagemagick
-- jq
-- timg (optionnal)
-- [TMDB](https://www.themoviedb.org/) account (for movie API)
 
 
 ## Setup
 
-All scripts at the root of directory should have execution permission (including the PHP one)
+Installation process (for Debian or derivates)
 
-Write the TMDB API token in a file called `config/TMDBapiToken`
+### Dependencies
 
-Create `config` directory.
+This programm is supposed to depend only on packages that are in Debian.
 
-Run `composer install`
+- packages
+    - ffmpeg
+    - mediainfo
+    - gifsicle
+    - imagemagick
+    - jq
+    - timg
+    - php
+    - composer
+        - [plates](https://platesphp.com/)
+- [TMDB](https://www.themoviedb.org/) account (for movie API)
+
+Command to install dependencies (on Debian)
+
+    sudo apt install ffmpeg mediainfo gifsicle imagemagick jq timg php composer
 
 
-### Encoding
+### Install
 
-Quality setting for video is hardcoded. in file `build-thumbnail.sh`
-Resolution output depend on aspect ratio.
-video with aspect ratio under 2 are encoded to 480p and above use 576p.
+Go to desired folder.
+Then clone the git repo in current folder.
 
-## Usage
+    git clone https://github.com/vincent-peugnet/carnet-video/ .
 
-### Building
 
-The generator build from `src` dir to `build` dir. This setting is hardcoded.
+Install composer dependencies
 
+    composer install
+
+
+All scripts at the root of directory should have execution permission (including the PHP one).
+
+    chmod +x *.sh build-html.php
+
+
+Create base directories and files for "src" and "config".
+
+    mkdir -p src/clips src/collections src/movies config
+    touch src/tags src/aspectRatios config/TMDBapiToken config/newClip config/importDirectory
+
+
+### Configure
+
+- Write the TMDB API token in a file `config/TMDBapiToken` (create an account on [TMDB](https://www.themoviedb.org/) to get the token)
+- Fill `config/newClip` with number `1`
+- Fill `config/importDirectory` with the temporary path where new video files are captured.
+It's recommended to use an absolute path (starting with a `/`)
+
+
+## Use
+
+### Architecture
 ```
 📁 src
     📁 clips
@@ -55,21 +81,14 @@ The generator build from `src` dir to `build` dir. This setting is hardcoded.
     📁 movies
         📄 <movieId>.json
         ...
-    📄 allowedTags
-    📄 allowedAspectRatios
+    📄 tags
+    📄 aspectRatios
 ```
 
 Movie ID used is the official TMDB id.
 The `src/movies` folder is automatically populated during building.
 
-To lauch the build:
-
-    ./build.sh
-
-This will first generate HTML. Then encode thumnails, gifs, and videos files.
-
-
-### Importing
+### Import new video clips
 
 This programm assumes you have a folder that contain newly captured video file(see [CAPTURE.md](CAPTURE.md)).
 This directory have to be declared in the file `config/importDirectory`.
@@ -81,7 +100,7 @@ To import clip use the follow command:
     ./importClips.sh
 
 
-### Managing
+### Manage
 
 Main command to view, edit a clip:
 
@@ -102,3 +121,26 @@ To create/edit a collection, it's also possible to use
     ./collection.sh <collectionID> <ClipID>...
 
 And to provide any number of clip to be added to the collection.
+
+
+### Build
+
+The generator build from `src` dir to `build` dir. This folders are hardcoded.
+
+To lauch the build:
+
+    ./build.sh
+
+This will first generate HTML. Then encode thumnails, gifs, and videos files.
+
+
+## Infos
+
+More infos about how this program do things
+
+### Encoding
+
+Quality setting for video is hardcoded. in file `build-thumbnail.sh`
+Resolution output depend on aspect ratio.
+video with aspect ratio under 2 are encoded to 480p and above use 576p.
+

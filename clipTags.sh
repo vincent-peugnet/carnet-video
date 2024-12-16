@@ -11,7 +11,7 @@ clipTags=$(cat src/clips/$1.json | jq -r  .tags | jq -r 'join(" ")')
 
 options=''
 
-allowedTags=$(cat src/allowedTags)
+tags=$(cat src/tags)
 
 while read -r line
 do
@@ -23,7 +23,7 @@ do
         opt="$opt off"
     fi
     options+="$opt "
-done <<< "$allowedTags"
+done <<< "$tags"
 
 
 
