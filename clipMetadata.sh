@@ -22,4 +22,5 @@ json=$(jq --arg aspectRatio "$aspectRatio" --arg d "$d" '.duration = $d | .aspec
 
 echo "$json" > src/clips/$1.json
 echo '💾 updated'
+sleep 0.5
 exit 0

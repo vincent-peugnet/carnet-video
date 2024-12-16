@@ -40,3 +40,5 @@ updatedJson=$(jq --argjson choices "$choices" '.tags = $choices' src/clips/$1.js
 
 echo "$updatedJson" > src/clips/$1.json
 echo '💾 updated'
+sleep 0.5
+exit 0

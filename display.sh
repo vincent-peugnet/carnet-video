@@ -62,6 +62,15 @@ do
     fi
 done
 
+if test -n "$movieId" -a "$movieId" != 'null' -a -f "src/movies/$movieId.json" 
+then
+    title=$(jq -r .title src/movies/$movieId.json)
+    year=$(jq -r .year src/movies/$movieId.json)
+    movie="$title - $year   (#$movieId)"
+else
+    movie='❓️'
+fi
+
 if test $aspectRatio = null -o $duration = null
 then
     ./clipMetadata.sh $1
@@ -77,7 +86,7 @@ h=$(($h-7))
 timg   -gx$h  --frames=1 src/clips/$1.mkv
 
 echo -e "\033[1mClip #$1\033[0m  | ⏱️  $duration s  | ➗ $aspectRatio   <http://localhost:8066/clip/$1/>"
-echo '🎞️  movie:' $movieId
+echo '🎞️  movie:' $movie
 echo '📄 description:' $description
 echo '🎟️  tags:' "${tags[@]}"
 echo "📜  collections: ${collections[@]}"
@@ -103,7 +112,7 @@ case $input in
     p|P)
         echo '👁️  play !!'
         xdg-open src/clips/$1.mkv
-        sleep 1
+        sleep 0.5 
         ./display.sh $1
         ;;
     d|D)

@@ -20,3 +20,5 @@ updatedJson=$(jq --arg description "$description" '.description = $description' 
 
 echo "$updatedJson" > src/clips/$1.json
 echo '💾 updated'
+sleep 0.5
+exit 0
