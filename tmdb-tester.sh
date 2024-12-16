@@ -4,7 +4,7 @@
 #
 # Provide a movie ID as first argument
 
-apiToken=$(cat TMDBapiToken)
+apiToken=$(cat config/TMDBapiToken)
 
 curl -s --request GET \
      --url "https://api.themoviedb.org/3/movie/$1" \

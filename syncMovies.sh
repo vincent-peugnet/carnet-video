@@ -1,6 +1,6 @@
 #!/bin/bash
 
-apiToken=$(cat TMDBapiToken)
+apiToken=$(cat config/TMDBapiToken)
 
 echo -e "🎫 \033[1msyncing movie metadatas\033[0m"
 

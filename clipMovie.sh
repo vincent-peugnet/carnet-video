@@ -55,7 +55,7 @@ case $input in
         fi
 
         echo "📥️ fetching data for movie #$movie"
-        apiToken=$(cat TMDBapiToken)
+        apiToken=$(cat config/TMDBapiToken)
         json=$(curl -s --request GET \
             --url "https://api.themoviedb.org/3/movie/$movie" \
             --header "Authorization: Bearer $apiToken")

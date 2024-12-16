@@ -24,7 +24,7 @@ See [CAPTURE.md](CAPTURE.md), for more info about this part.
 
 All scripts at the root of directory should have execution permission (including the PHP one)
 
-Write the TMDB API token in a file called `TMDBapiToken`
+Write the TMDB API token in a file called `config/TMDBapiToken`
 
 Create `config` directory.
 
