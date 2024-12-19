@@ -12,7 +12,7 @@
     <ul class="clips">
         <?php foreach ($clips as $clip) : ?>
             <li>
-                <?php $this->insert('clipThumbnail', ['id' => $clip]) ?>
+                <?php $this->insert('clipThumbnail', ['id' => $clip->id]) ?>
             </li>
         <?php endforeach ?>
     </ul>

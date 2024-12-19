@@ -35,7 +35,11 @@ function getCollections() : array
     $paths = glob('src/collections/*');
     foreach ($paths as $path) {
         $id = basename($path);
-        $collections[$id] = array_unique(file("src/collections/$id", FILE_IGNORE_NEW_LINES));
+        $collectionClipIds = array_unique(file("src/collections/$id", FILE_IGNORE_NEW_LINES));
+        $collectionClipIds = array_map(function($id) : int {
+            return intval($id);
+        }, $collectionClipIds);
+        $collections[$id] = $collectionClipIds;
     }
     ksort($collections);
     return $collections;
@@ -49,7 +53,7 @@ function getCollectionsIdIndex(array $collections) : array
 {
     $collectionsIndex = [];
     foreach ($collections as $collection => $clips) {
-        foreach ($clips as $id => $value) {
+        foreach ($clips as $id) {
             $collectionsIndex[$id][] = $collection;
         }
     }
@@ -230,13 +234,17 @@ function buildAspectRatios(array $aspectRatios, array $clips) : void
     file_put_contents("build/ar/index.html", $html);
 }
 
-
-function buildCollections(array $collections): void
+/**
+ * @param Clip[] $clips
+ */
+function buildCollections(array $collections, array $clips): void
 {
     global $templates;
     mkdir('build/collection');
-    foreach ($collections as $collection => $clips) {
-        $html = $templates->render('collection', ['collection' => $collection, 'clips' => $clips]);
+    foreach ($collections as $collection => $collectionClipIds) {
+        $collectionClipIds = array_flip($collectionClipIds);
+        $collectionClips = array_intersect_key($clips, $collectionClipIds);
+        $html = $templates->render('collection', ['collection' => $collection, 'clips' => $collectionClips]);
         if (!is_dir("build/collection/$collection")) {
             mkdir("build/collection/$collection", 0777, true);
         }
@@ -247,13 +255,15 @@ function buildCollections(array $collections): void
     file_put_contents("build/collection/index.html", $html);
 }
 
-
+/**
+ * @param Clip[] $clips
+ */
 function buildMovies(array $movies, array $clips): void
 {
     global $templates;
     mkdir('build/movie');
     foreach ($movies as $id => $movie) {
-        $filteredClips = array_filter($clips, function ($clip) use ($id): bool {
+        $filteredClips = array_filter($clips, function (Clip $clip) use ($id): bool {
             return isset($clip->movie) && $clip->movie === $id;
         });
         $html = $templates->render('movie', ['movie' => $movie, 'clips' => $filteredClips]);
@@ -281,7 +291,7 @@ buildClips($clips, $collectionsIndex, $movies, $aspectRatios);
 print '.';
 buildTags($tags, $clips);
 print '.';
-buildCollections($collections);
+buildCollections($collections, $clips);
 print '.';
 buildMovies($movies, $clips);
 print '.';
