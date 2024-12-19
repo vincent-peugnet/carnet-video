@@ -24,82 +24,110 @@ $templates = new Engine('generator/templates');
 $templates->addData(['stylesheet' => null]);
 
 
-print "🚀 \033[1mbuilding HTML\033[0m";
-
-// COLLECTIONS
-
-/** @var array[] $collections Associative array where key is collection string ID of collection and value is list of clips ID */
-$collections = [];
-$paths = glob('src/collections/*');
-foreach ($paths as $path) {
-    $id = basename($path);
-    $collections[$id] = array_unique(file("src/collections/$id", FILE_IGNORE_NEW_LINES));
-}
-ksort($collections);
-
-/** @var array[] $collectionsIndex associative array where key is clip int ID and value is list of collections string IDs */
-$collectionsIndex = [];
-foreach ($collections as $collection => $clips) {
-    foreach ($clips as $id => $value) {
-        $collectionsIndex[$id][] = $collection;
+/**
+ * COLLECTIONS
+ *
+ * @return array[] Associative array where key is collection string ID of collection and value is list of clips ID
+ **/
+function getCollections() : array
+{
+    $collections = [];
+    $paths = glob('src/collections/*');
+    foreach ($paths as $path) {
+        $id = basename($path);
+        $collections[$id] = array_unique(file("src/collections/$id", FILE_IGNORE_NEW_LINES));
     }
+    ksort($collections);
+    return $collections;
+}
+
+/**
+ * @param array[] $collections
+ * @return array[] associative array where key is clip int ID and value is list of collections string IDs
+ **/
+function getCollectionsIdIndex(array $collections) : array
+{
+    $collectionsIndex = [];
+    foreach ($collections as $collection => $clips) {
+        foreach ($clips as $id => $value) {
+            $collectionsIndex[$id][] = $collection;
+        }
+    }
+    return $collectionsIndex;
 }
 
 
-// TAGS
-
-/** @var string[] $tags Associative array where key is string ID and value is exactly the same */
-$tags = file('src/tags', FILE_IGNORE_NEW_LINES);
-$tags = array_combine($tags, $tags);
-ksort($tags);
-
-// ASPECT RATIO
-
-/** @var float[] $aspectRatios */
-$ratios = file('src/aspectRatios', FILE_IGNORE_NEW_LINES);
-$ratios = array_map(function($ratio) : float {
-    return floatval($ratio);
-}, $ratios);
-sort($ratios);
-
-foreach ($ratios as $i => $ratio) {
-    $prev = isset($ratios[$i - 1]) ? $ratios[$i - 1] : 0;
-    $next = isset($ratios[$i + 1]) ? $ratios[$i + 1] : 10;
-    $aspectRatios[] = new AspectRatio($ratio, $prev, $next);
+/**
+ * TAGS
+ *
+ * @return string[] Associative array where key is string ID and value is exactly the same
+ **/
+function getTags() : array
+{
+    $tags = file('src/tags', FILE_IGNORE_NEW_LINES);
+    $tags = array_combine($tags, $tags);
+    ksort($tags);
+    return $tags;
 }
 
-// MOVIES
-
-/** @var array[] $movies Associative array where key is movie int ID and value is an array containting metadata  */
-$movies = [];
-$paths = glob('src/movies/*.json');
-foreach ($paths as $path) {
-    $id = intval(basename($path, '.json'));
-    $movie = json_decode(file_get_contents($path), true);
-    $movie['id'] = $id;
-    $movies[$id] = $movie;
+/**
+ * ASPECT RATIO
+ *
+ * @return AspectRatio[]
+ **/
+function getAspectRatios() : array
+{
+    $ratios = file('src/aspectRatios', FILE_IGNORE_NEW_LINES);
+    $ratios = array_map(function($ratio) : float {
+        return floatval($ratio);
+    }, $ratios);
+    sort($ratios);
+    
+    foreach ($ratios as $i => $ratio) {
+        $prev = isset($ratios[$i - 1]) ? $ratios[$i - 1] : 0;
+        $next = isset($ratios[$i + 1]) ? $ratios[$i + 1] : 10;
+        $aspectRatios[] = new AspectRatio($ratio, $prev, $next);
+    }
+    return $aspectRatios;
 }
-ksort($movies);
 
 
-// CLIPS
-
-/** @var array[] $clips Associative array where key is clip int ID and value is an array containting metadata  */
-$clips = [];
-$paths = glob('src/clips/*.json');
-foreach ($paths as $path) {
-    $id = intval(basename($path, '.json'));
-    $json = json_decode(file_get_contents($path), true);
-    $clips[$id] = new Clip($id, $json);
+/**
+ * MOVIES
+ *
+ * @return array[] Associative array where key is movie int ID and value is an array containting metadata 
+ **/
+function getMovies() : array
+{
+    $movies = [];
+    $paths = glob('src/movies/*.json');
+    foreach ($paths as $path) {
+        $id = intval(basename($path, '.json'));
+        $movie = json_decode(file_get_contents($path), true);
+        $movie['id'] = $id;
+        $movies[$id] = $movie;
+    }
+    ksort($movies);
+    return $movies;
 }
-ksort($clips);
 
-
-
-
-
-
-// GENERATOR _____________________________________________________
+/**
+ * CLIPS
+ *
+ * @return Clip[] Associative array where key is clip int ID and value is an array containting metadata 
+ **/
+function getClips() : array
+{
+    $clips = [];
+    $paths = glob('src/clips/*.json');
+    foreach ($paths as $path) {
+        $id = intval(basename($path, '.json'));
+        $json = json_decode(file_get_contents($path), true);
+        $clips[$id] = new Clip($id, $json);
+    }
+    ksort($clips);
+    return $clips;
+}
 
 function removeHtmlBuild(): void
 {
@@ -237,6 +265,15 @@ function buildMovies(array $movies, array $clips): void
     $html = $templates->render('movieIndex', ['movies' => $movies]);
     file_put_contents("build/movie/index.html", $html);
 }
+
+$clips = getClips();
+$collections = getCollections();
+$collectionsIndex = getCollectionsIdIndex($collections);
+$movies = getMovies();
+$aspectRatios = getAspectRatios();
+$tags = getTags();
+
+print "🚀 \033[1mbuilding HTML\033[0m";
 
 removeHtmlBuild();
 print '.';
