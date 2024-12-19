@@ -59,8 +59,9 @@ ul.clips li a {
     position: relative;
     left: 0;
     top: 0;
-    min-height: 100px;
     background: grey;
+    /*! border: solid 1px; */
+    display: table-caption;
 }
 
 ul.clips img.background {
