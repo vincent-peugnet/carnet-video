@@ -21,7 +21,7 @@ importDirectory=$(echo "$importDirectory" | sed 's:/*$::')
 if test -z "$importDirectory" -o ! -d "$importDirectory"
 then
     echo 'error with import Directory'
-    echo 'editor create file "config/importDirectory"'
+    echo 'create or edit file "config/importDirectory"'
     exit 1
 fi
 
@@ -29,7 +29,7 @@ echo "reading import directory: '$importDirectory'"
 
 directoryContent=$(ls -A "$importDirectory")
 
-if test -z $directoryContent
+if test -z "$directoryContent"
 then
     echo 'directory is empty'
     exit 1
