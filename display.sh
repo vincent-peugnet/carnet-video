@@ -52,6 +52,7 @@ movieId=$(jq -e .movie src/clips/$1.json)
 description=$(jq -r .description src/clips/$1.json)
 aspectRatio=$(jq -r .aspectRatio src/clips/$1.json)
 duration=$(jq -r .duration src/clips/$1.json)
+color=$(jq -r .color src/clips/$1.json)
 tags=$(cat src/clips/$1.json | jq -r  .tags | jq -r 'join(" ")')
 collections=()
 for collection in src/collections/*
@@ -71,21 +72,28 @@ else
     movie='❓️'
 fi
 
-if test $aspectRatio = null -o $duration = null
+if test $aspectRatio = null -o $duration = null -o $color = null
 then
     ./clipMetadata.sh $1
+    sleep 1
     ./display.sh $1
     exit
 fi
 
-
+hex=$(echo "$color" | awk '{print substr($0,2)}')
+r=$(printf '0x%0.2s' "$hex")
+g=$(printf '0x%0.2s' ${hex#??})
+b=$(printf '0x%0.2s' ${hex#????})
+cc=$(echo -e `printf "%03d" "$(((r<75?0:(r-35)/40)*6*6+(g<75?0:(g-35)/40)*6+(b<75?0:(b-35)/40)+16))"`)
+cc='\e[38;5;'$cc'm'
+color="$cc██\e[0m"
 
 h=$(tput lines)
 h=$(($h-7))
 
 timg   -gx$h  --frames=1 src/clips/$1.mkv
 
-echo -e "\033[1mClip #$1\033[0m  | ⏱️  $duration s  | ➗ $aspectRatio   <http://localhost:8066/clip/$1/>"
+echo -e "\033[1mClip #$1\033[0m   ⏱️  $duration s   ➗ $aspectRatio  🎨 $color  <http://localhost:8066/clip/$1/>"
 echo '🎞️  movie:' $movie
 echo '📄 description:' $description
 echo '🎟️  tags:' "${tags[@]}"
@@ -95,7 +103,8 @@ echo -e "\e[37m[T]ags [C]ollections [D]escription [M]ovie, [P]lay [←]prev [→
 
 escape_char=$(printf "\u1b")
 read -rsn1 input # get 1 character
-if [[ $input == $escape_char ]]; then
+if [[ $input == $escape_char ]]
+then
     read -rsn2 input # read 2 more chars
 fi
 case $input in

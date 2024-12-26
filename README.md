@@ -131,7 +131,7 @@ To lauch the build:
 
     ./build.sh
 
-This will first generate HTML. Then check for clip's movies. And finally encode thumnails, gifs, and videos files.
+This will first encode thumnails, gifs, and videos files. Then check for clip's movies. And finally generate HTML.
 
 
 ## Infos

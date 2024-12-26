@@ -17,6 +17,8 @@ class Clip
 
     public readonly ?int $duration;
 
+    public readonly ?string $color;
+
     public function __construct(int $id, array $json) {
         $this->id = $id;
         $this->description = $json['description'] ?? '';
@@ -24,6 +26,6 @@ class Clip
         $this->movie = $json['movie'] ?? null;
         $this->aspectRatio = $json['aspectRatio'] ?? null;
         $this->duration = $json['duration'] ?? null;
+        $this->color = $json['color'] ?? null;
     }
-
 }

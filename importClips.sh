@@ -43,6 +43,7 @@ do
     if test -f "src/clips/$newClip.mkv"
     then
         echo "imported clip #$newClip"
+        ./clipMetadata.sh "$newClip"
         let newClip++
         echo "$newClip" > 'config/newClip'
         let i++

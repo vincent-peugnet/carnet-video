@@ -59,7 +59,6 @@ ul.clips li a {
     position: relative;
     left: 0;
     top: 0;
-    background: grey;
     /*! border: solid 1px; */
     display: table-caption;
 }
