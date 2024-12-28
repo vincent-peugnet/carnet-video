@@ -11,6 +11,7 @@ fi
 
 clear
 
+# If JSON file does not exit
 if test ! -f src/clips/$1.json
 then
     ./clipMetadata.sh $1 # try to create JSON file if MKV exist
@@ -48,7 +49,7 @@ then
     fi
 fi
 
-movieId=$(jq -e .movie src/clips/$1.json)
+movieId=$(jq -r .movie src/clips/$1.json)
 description=$(jq -r .description src/clips/$1.json)
 aspectRatio=$(jq -r .aspectRatio src/clips/$1.json)
 duration=$(jq -r .duration src/clips/$1.json)
@@ -63,12 +64,19 @@ do
     fi
 done
 
-if test -n "$movieId" -a "$movieId" != 'null' -a -f "src/movies/$movieId.json" 
+if test -n "$movieId" -a "$movieId" != 'null'
 then
-    title=$(jq -r .title src/movies/$movieId.json)
-    year=$(jq -r .year src/movies/$movieId.json)
-    movie="$title - $year   (#$movieId)"
+    movieIsDefined=1
+    if test -f "src/movies/$movieId.json"
+    then
+        title=$(jq -r .title src/movies/$movieId.json)
+        year=$(jq -r .year src/movies/$movieId.json)
+        movie="$title - $year   (#$movieId)"
+    else
+        movie="#$movieId (type [M] to fetch movie metadata)"
+    fi
 else
+    movieIsDefined=0
     movie='❓️'
 fi
 
@@ -130,8 +138,15 @@ case $input in
         exit
         ;;
     m|M)
-        ./clipMovie.sh $1
-        ./display.sh $1
+        if test $movieIsDefined = 1
+        then
+            clear
+            ./fetchMovie.sh "$movieId"
+            ./display.sh $1
+        else
+            ./clipMovie.sh $1
+            ./display.sh $1
+        fi
         exit
         ;;
     '[C')

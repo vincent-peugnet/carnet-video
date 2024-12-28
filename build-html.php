@@ -3,6 +3,7 @@
 
 use Carnet\AspectRatio;
 use Carnet\Clip;
+use Carnet\Movie;
 use League\Plates\Engine;
 
 /**
@@ -106,10 +107,9 @@ function getMovies() : array
     $movies = [];
     $paths = glob('src/movies/*.json');
     foreach ($paths as $path) {
-        $id = intval(basename($path, '.json'));
-        $movie = json_decode(file_get_contents($path), true);
-        $movie['id'] = $id;
-        $movies[$id] = $movie;
+        $id = basename($path, '.json');
+        $movieJson = json_decode(file_get_contents($path), true);
+        $movies[$id] = new Movie($id, $movieJson);
     }
     ksort($movies);
     return $movies;

@@ -45,7 +45,7 @@ case $input in
         movie="${movies[$input]}"
         ;;
     *)
-        echo 'What is the movie TMDB identifier ? (press Enter to send, leave empty to abort)'
+        echo 'What is the movie Wikidata identifier ? (press Enter to send, leave empty to abort)'
         read movie
 
         if test -z "$movie"
@@ -83,7 +83,7 @@ esac
 
 
 clip=$(jq --arg movie "$movie" '.movie = $movie' src/clips/$1.json)
-echo "$clip" | jq '.movie |= tonumber' > "src/clips/$1.json"
+echo "$clip" > "src/clips/$1.json"
 
 echo '💾 updated'
 sleep 0.5

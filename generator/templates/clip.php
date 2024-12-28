@@ -22,9 +22,9 @@
     <?php if ($movie !== null) : ?>
         <div class="movie">
             <h2>Movie</h2>
-            <a href="/movie/<?= $movie['id'] ?>/">
-                <?= $movie['title'] ?>
-                <span class="year"><?= $movie['year'] ?></span>
+            <a href="/movie/<?= $movie->id ?>/">
+                <?= $movie->title ?>
+                <span class="year"><?= $movie->year ?></span>
             </a>
         </div>
     <?php endif ?>

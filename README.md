@@ -27,7 +27,7 @@ This programm is supposed to depend only on packages that are in Debian.
     - php
     - composer
         - [plates](https://platesphp.com/)
-- [TMDB](https://www.themoviedb.org/) account (for movie API)
+- Wikidata (online service)
 
 Command to install dependencies (on Debian)
 
@@ -55,12 +55,11 @@ All scripts at the root of directory should have execution permission (including
 Create base directories and files for "src" and "config".
 
     mkdir -p src/clips src/collections src/movies config
-    touch src/tags src/aspectRatios config/TMDBapiToken config/newClip config/importDirectory
+    touch src/tags src/aspectRatios config/newClip config/importDirectory
 
 
 ### Configure
 
-- Write the TMDB API token in a file `config/TMDBapiToken` (create an account on [TMDB](https://www.themoviedb.org/) to get the token)
 - Fill `config/newClip` with number `1`
 - Fill `config/importDirectory` with the temporary path where new video files are captured.
 It's recommended to use an absolute path (starting with a `/`)
@@ -85,7 +84,7 @@ It's recommended to use an absolute path (starting with a `/`)
     📄 aspectRatios
 ```
 
-Movie ID used is the official TMDB id.
+Movie ID used is the official Wikidata id.
 The `src/movies` folder is automatically populated during building.
 
 ### Import new video clips

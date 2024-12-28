@@ -8,8 +8,8 @@
     <?php foreach ($movies as $id => $movie) : ?>
         <li>
             <a href="/movie/<?= $id ?>/">
-                <?= $movie['title'] ?>
-                <span class="year"><?= $movie['year'] ?></span>
+                <?= $movie->title ?>
+                <span class="year"><?= $movie->year ?></span>
             </a>
         </li>
         <?php endforeach ?>

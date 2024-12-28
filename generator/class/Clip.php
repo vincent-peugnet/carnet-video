@@ -11,7 +11,7 @@ class Clip
     /** @var string[] $tags */
     public readonly array $tags;
 
-    public readonly ?int $movie;
+    public readonly ?string $movie;
 
     public readonly ?float $aspectRatio;
 
