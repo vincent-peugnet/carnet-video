@@ -30,6 +30,10 @@
     <?php if ($movie->wiki !== null) : ?>
         <a href="<?= $movie->wiki ?>">Wikipédia</a>
     <?php endif ?>
+    <?php if ($movie->tmdb !== null) : ?>
+        <a href="https://www.themoviedb.org/movie/<?= $movie->tmdb ?>">TMDB</a>
+    <?php endif ?>
+    <a href="https://www.imdb.com/title/<?= $movie->imdb ?>/">IMDB</a>
     <h2>Clips</h2>
     <ul class="clips">
         <?php foreach ($clips as $clip) : ?>

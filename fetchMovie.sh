@@ -37,7 +37,8 @@ movieLabelFr=$(echo $movieJson | jq -r ".entities.$1.labels.fr.value")
 originalTitle=$(echo $movieJson | jq -r ".entities.$1.claims.P1476[0].mainsnak.datavalue.value.text // \"\"")
 frWiki=$(echo $movieJson | jq -r ".entities.$1.sitelinks.frwiki.url // \"\"")
 date=$(echo $movieJson | jq -r ".entities.$1.claims.P577[0].mainsnak.datavalue.value.time // \"\"")
-
+imdb=$(echo $movieJson | jq -r ".entities.$1.claims.P345[0].mainsnak.datavalue.value // \"\"")
+tmdb=$(echo $movieJson | jq -r ".entities.$1.claims.P4947[0].mainsnak.datavalue.value // \"\"")
 
 
 # Get IDs that we will use to do some other requests
@@ -46,9 +47,9 @@ dopId=$(echo $movieJson | jq -r ".entities.$1.claims.P344[0].mainsnak.datavalue.
 
 
 # Original title, directors and release year are mandatory
-if test -z "$originalTitle" -o -z "$date" -o -z "$directorIds"
+if test -z "$originalTitle" -o -z "$date" -o -z "$directorIds" -o -z "$imdb"
 then
-    echo '🚧 movie original title, directors or year is missing'
+    echo '🚧 movie original title, directors, IMDB id or year is missing'
     exit 1
 fi
 
@@ -86,6 +87,8 @@ then
     echo "title: $movieLabelFr"
     echo "original title: $originalTitle"
     echo "<$frWiki>"
+    echo "<https://www.imdb.com/title/$imdb/>"
+    echo "<https://www.themoviedb.org/movie/$tmdb>"
     echo "year: $year"
     echo "director(s): ${directors[@]}"
     echo "dop: $dopLabelFr"
@@ -106,6 +109,8 @@ jq -n   --arg title "$movieLabelFr" \
         --arg year "$year" \
         --arg dop "$dopLabelFr" \
         --arg wiki "$frWiki" \
+        --arg imdb "$imdb" \
+        --arg tmdb "$tmdb" \
         --argjson directors "$directorsJson" \
     '{
         title: $title,
@@ -113,11 +118,14 @@ jq -n   --arg title "$movieLabelFr" \
         year: $year,
         directors: $directors,
         dop: $dop,
-        wiki: $wiki
+        wiki: $wiki,
+        imdb: $imdb,
+        tmdb: $tmdb
     }
     | .year |= tonumber
     | if .dop == "" then .dop |= null else . end
     | if .wiki == "" then .wiki |= null else . end
+    | if .tmdb == "" then .tmdb |= null else . end
     | if .title == "" then .title |= null else . end' \
     > "src/movies/$1.json"
 

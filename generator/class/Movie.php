@@ -17,7 +17,9 @@ class Movie
 
     public readonly ?string $dop;
 
+    public readonly string $imdb;
     public readonly ?string $wiki;
+    public readonly ?string $tmdb;
 
     public function __construct(string $id, array $json) {
         $this->id = $id;
@@ -26,6 +28,8 @@ class Movie
         $this->year = $json['year'];
         $this->directors = $json['directors'] ?? [];
         $this->dop = $json['dop'] ?? null;
+        $this->imdb = $json['imdb'];
+        $this->tmdb = $json['tmdb'] ?? null;
         $this->wiki = $json['wiki'] ?? null;
     }
 }
