@@ -1,10 +1,13 @@
 <?php
     $title = "ar index";
-    $this->layout('layout', ['title' => $title]);
+    $this->layout('general', ['title' => $title]);
 ?>
 
 <?php $this->start('main') ?>
-<ul>
+<h1>
+    Formats d'image
+</h1>
+<ul class="index">
     <?php foreach ($aspectRatios as $aspectRatio) : ?>
         <li>
             <a href="/ar/<?= $aspectRatio->slug ?>/"><?= $aspectRatio->ratio ?></a>

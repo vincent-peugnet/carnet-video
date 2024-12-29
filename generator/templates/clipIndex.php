@@ -1,9 +1,12 @@
 <?php
     $title = "index";
-    $this->layout('layout', ['title' => $title]);
+    $this->layout('general', ['title' => $title]);
 ?>
 
 <?php $this->start('main') ?>
+<h1>
+    Extraits
+</h1>
 <ul class="clips">
     <?php foreach ($clips as $clip) : ?>
         <li>

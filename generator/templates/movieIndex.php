@@ -1,10 +1,13 @@
 <?php
     $title = "movie index";
-    $this->layout('layout', ['title' => $title]);
+    $this->layout('general', ['title' => $title]);
 ?>
 
 <?php $this->start('main') ?>
-<ul>
+<h1>
+    Films
+</h1>
+<ul class="index">
     <?php foreach ($movies as $id => $movie) : ?>
         <li>
             <a href="/movie/<?= $id ?>/">

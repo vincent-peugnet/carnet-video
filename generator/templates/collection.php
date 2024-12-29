@@ -1,11 +1,11 @@
 <?php
     $title = "collection $collection";
-    $this->layout('layout', ['title' => $title]);
+    $this->layout('general', ['title' => $title]);
 ?>
 
 <?php $this->start('main') ?>
     <h1>
-        <a href="/collection/">collection</a>
+        <a href="/collection/">Collections</a>
         >
         <span><?= $collection ?></span>
     </h1>

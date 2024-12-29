@@ -1,11 +1,11 @@
 <?php
     $title = "tag $tag";
-    $this->layout('layout', ['title' => $title]);
+    $this->layout('general', ['title' => $title]);
 ?>
 
 <?php $this->start('main') ?>
     <h1>
-        <a href="/tag/">tag</a>
+        <a href="/tag/">Tags</a>
         >
         <span><?= $tag ?></span>
     </h1>

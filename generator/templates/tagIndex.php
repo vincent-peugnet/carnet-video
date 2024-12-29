@@ -1,10 +1,13 @@
 <?php
     $title = "tag index";
-    $this->layout('layout', ['title' => $title]);
+    $this->layout('general', ['title' => $title]);
 ?>
 
 <?php $this->start('main') ?>
-<ul>
+<h1>
+    Tags
+</h1>
+<ul class="index">
     <?php foreach ($tags as $tag) : ?>
         <li>
             <a href="/tag/<?= $tag ?>/"><?= $tag ?></a>

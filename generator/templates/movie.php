@@ -1,40 +1,52 @@
 <?php
     $title = $movie->title;
-    $this->layout('layout', ['title' => $title]);
+    $this->layout('general', ['title' => $title]);
 ?>
 
 <?php $this->start('main') ?>
     <h1>
-        <a href="/movie/">movie</a>
+        <a href="/movie/">Films</a>
         >
         <span><?= $movie->title ?></span>
     </h1>
 
-    <h2>Infos</h2>
-    <?php if (!empty($movie->directors)) : ?>
+    <div class="infos">
         <div>
-            <span>directed by</span>
-            <em><?= $movie->directors[0] ?></em><?php foreach (array_slice($movie->directors, 1) as $director) : ?>,
-            <em><?= $director ?></em><?php endforeach ?>
+            <span class="label">titre original</span>
+            <em><?= $movie->originalTitle ?></em>
         </div>
-    <?php endif ?>
-    <?php if ($movie->dop !== null) : ?>
+        <?php if (!empty($movie->directors)) : ?>
+            <div>
+                <span class="label">réalisé par</span>
+                <em><?= $movie->directors[0] ?></em><?php foreach (array_slice($movie->directors, 1) as $director) : ?>,
+                <em><?= $director ?></em><?php endforeach ?>
+            </div>
+        <?php endif ?>
+        <?php if ($movie->dop !== null) : ?>
+            <div>
+                <span class="label">image de</span>
+                <em>
+                    <?= $movie->dop ?>
+                </em>
+            </div>        
+        <?php endif ?>
         <div>
-            <span>photography by</span>
-            <em>
-                <?= $movie->dop ?>
-            </em>
-        </div>        
-    <?php endif ?>
-    <div>year: <?= $movie->year ?></div>
-    <?php if ($movie->wiki !== null) : ?>
-        <a href="<?= $movie->wiki ?>">Wikipédia</a>
-    <?php endif ?>
-    <?php if ($movie->tmdb !== null) : ?>
-        <a href="https://www.themoviedb.org/movie/<?= $movie->tmdb ?>">TMDB</a>
-    <?php endif ?>
-    <a href="https://www.imdb.com/title/<?= $movie->imdb ?>/">IMDB</a>
-    <h2>Clips</h2>
+            <span class="label">sorti en</span> <?= $movie->year ?>
+        </div>
+        <div class="extDb">
+            <?php if ($movie->wiki !== null) : ?>
+                <a href="<?= $movie->wiki ?>" class="wikipedia">Wikipédia</a>
+            <?php endif ?>
+            <?php if ($movie->tmdb !== null) : ?>
+                <a href="https://www.themoviedb.org/movie/<?= $movie->tmdb ?>" class="tmdb">TMDB</a>
+            <?php endif ?>
+            <a href="https://www.imdb.com/title/<?= $movie->imdb ?>/" class="imdb">IMDb</a>
+        </div>
+    </div>
+
+
+
+    <h2>Extraits</h2>
     <ul class="clips">
         <?php foreach ($clips as $clip) : ?>
             <li>

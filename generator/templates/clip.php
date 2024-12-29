@@ -1,11 +1,11 @@
 <?php
     $title = "clip $clip->id";
-    $this->layout('layout', ['title' => $title]);
+    $this->layout('general', ['title' => $title]);
 ?>
 
 <?php $this->start('main') ?>
     <h1>
-        <a href="/clip/">clip</a>
+        <a href="/clip/">Extraits</a>
         >
         <span># <?= $clip->id ?></span>
     </h1>
@@ -21,7 +21,7 @@
     </div>
     <?php if ($movie !== null) : ?>
         <div class="movie">
-            <h2>Movie</h2>
+            <h2>Film</h2>
             <a href="/movie/<?= $movie->id ?>/">
                 <?= $movie->title ?>
                 <span class="year"><?= $movie->year ?></span>
@@ -30,7 +30,7 @@
     <?php endif ?>
     <?php if ($aspectRatio !== null) : ?>
         <div class="aspectRatio">
-            <h2>AR</h2>
+            <h2>Format d'image</h2>
             <a href="/ar/<?= $aspectRatio->slug ?>/">
                 <?= $aspectRatio->ratio ?>
             </a>

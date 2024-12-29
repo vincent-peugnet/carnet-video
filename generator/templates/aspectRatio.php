@@ -1,11 +1,11 @@
 <?php
     $title = "AR $aspectRatio->ratio";
-    $this->layout('layout', ['title' => $title]);
+    $this->layout('general', ['title' => $title]);
 ?>
 
 <?php $this->start('main') ?>
     <h1>
-        <a href="/ar/">ar</a>
+        <a href="/ar/">Formats d'image</a>
         >
         <span><?= $aspectRatio->ratio ?></span>
     </h1>

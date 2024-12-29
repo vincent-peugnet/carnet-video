@@ -1,12 +1,20 @@
+* {
+    --bg-color: #0c1a3c;
+    --fg-color: #fa7eff;
+}
+
+
+
+
 html, body {
     height: 100%;
 }
 
 body {
-    font-family: sans;
+    font-family: "Liberation sans", sans;
     margin: 0 3%;
-    background-color: rgb(196, 185, 185);
-    color: black;
+    background-color: var(--bg-color);
+    color: var(--fg-color);
     display: flex;
     flex-direction: column;
 }
@@ -34,12 +42,20 @@ ul {
     padding: 0;
 }
 
-nav a {
-    margin: 7px;
+main .index li {
+    margin: 2px 0;
+}
+
+header h1 {
+    font-size: 2.5em;
+    text-transform: uppercase;
+  }
+
+header nav a {
+    margin-right: 7px;
 }
 
 header, nav {
-    display: inline-block;
     margin-right: 20px;
 }
 ul.clips {
@@ -101,11 +117,36 @@ span.year {
     font-size: 0.8em;
 }
 
+/** HOME */
+
+
+main.home {
+    max-width: 533px;
+}
+
+
+main.home nav a {
+    font-size: 1.5em;
+    margin: 10px 0px;
+    background: var(--fg-color);
+    color: var(--bg-color);
+    padding: 6px 10px;
+    display: block;
+    opacity: 0.8;
+}
+  
+main.home nav a:hover {
+    text-decoration: none;
+    opacity: 1;
+    background: var(--bg-color);
+    color: var(--fg-color);
+    outline: solid 1px;
+}
 
 /** CLIP */
 
 div.tags a {
-    margin: 7px;
+    margin-right: 7px;
 }
 
 video {
@@ -113,6 +154,46 @@ video {
     width: 100%;
 }
 
+/** MOVIE */
+
+
+.infos .label {
+    font-size: 0.8em;
+  }
+
+
+.infos > * {
+    margin: 4px 0;
+}
+
+/** Movie external databases */
+
+.extDb > a {
+    padding: 2px 4px;
+    opacity: 0.65;
+    margin-right: 4px;
+  
+  }
+    
+  .wikipedia {
+    background-color: white;
+    color: black;
+  }
+    
+  .tmdb {
+    background-color: blue;
+    color: white;
+  }
+    
+  .imdb {
+    background-color: yellow;
+    color: black;
+  }
+  
+  .extDb > a:hover {
+    text-decoration: none;
+    opacity: 1;
+  }
 
 
 /** MEDIA QUERIES */
@@ -121,10 +202,6 @@ video {
     ul.clips {
         max-width: 610px;
         column-count: 2;
-    }
-
-    header, nav {
-        display: block;
     }
 }
 
