@@ -99,7 +99,14 @@ color="$cc██\e[0m"
 h=$(tput lines)
 h=$(($h-7))
 
-timg   -gx$h  --frames=1 src/clips/$1.mkv
+# if the thumbnail as already been generated, use it. Otherwise, read the first frame of movie file.
+if test -f "build/assets/thumbnail/$1.webp"
+then
+    timg -gx$h "build/assets/thumbnail/$1.webp"
+else
+    timg   -gx$h  --frames=1 "src/clips/$1.mkv"
+fi
+
 
 echo -e "\033[1mClip #$1\033[0m   ⏱️  $duration s   ➗ $aspectRatio  🎨 $color  <http://localhost:8066/clip/$1/>"
 echo '🎞️  movie:' $movie
