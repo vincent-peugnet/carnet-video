@@ -14,14 +14,14 @@ mkdir -p /tmp/carnet-video/thumbnail
 mkdir -p /tmp/carnet-video/clip
 
 mkdir -p build/assets/thumbnail
+mkdir -p build/assets/preview
 mkdir -p build/assets/clip
 
 counter=0
 
 for clip in src/clips/*.mkv
 do
-    id="${clip##*/}"
-    id="${id%.*}"
+    id=$(basename -s '.mkv' "$clip")
 
     if test ! -f "build/assets/thumbnail/$id.webp"
     then
@@ -29,18 +29,15 @@ do
         convert /tmp/carnet-video/thumbnail/$id.png -thumbnail 300x300 "/tmp/carnet-video/thumbnail/$id.webp"
         mv "/tmp/carnet-video/thumbnail/$id.webp" "build/assets/thumbnail/$id.webp"
         newLineIfFirst
-        echo "🖼️ generated webp thumbnail for clip #$id"
+        echo "🖼️  generated webp thumbnail for clip #$id"
         let counter++
     fi
 
-    if test ! -f "build/assets/thumbnail/$id.gif"
+    if test ! -f "build/assets/preview/$id.webp"
     then
-        mkdir /tmp/carnet-video/thumbnail/$id
-        ffmpeg -hide_banner -loglevel error -ss 00:00:00 -to 00:00:30 -i "$clip" -r 0.5 -vf "scale='300:trunc(300/dar)',setsar=1/1" /tmp/carnet-video/thumbnail/$id/%04d.gif
-        gifsicle --delay=20 --optimize --optimize  /tmp/carnet-video/thumbnail/$id/*.gif > /tmp/carnet-video/thumbnail/$id.gif
-        mv "/tmp/carnet-video/thumbnail/$id.gif" "build/assets/thumbnail/$id.gif"
+        ffmpeg -hide_banner -loglevel error -ss 00:00:00 -to 00:00:05 -r 200 -i "$clip" -vf "scale='300:trunc(300/dar)',setsar=1/1" -compression_level 6 -q:v 35 -loop 1 -r 7 "build/assets/preview/$id.webp"
         newLineIfFirst
-        echo "🖼️ generated gif thumbnail for clip #$id"
+        echo "🖼️  generated webp preview for clip #$id"
         let counter++
     fi
     
