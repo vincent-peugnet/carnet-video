@@ -3,9 +3,6 @@
     --fg-color: #fa7eff;
 }
 
-
-
-
 html, body {
     height: 100%;
 }
@@ -49,7 +46,7 @@ main .index li {
 header h1 {
     font-size: 2.5em;
     text-transform: uppercase;
-  }
+}
 
 header nav a {
     margin-right: 7px;
@@ -58,6 +55,7 @@ header nav a {
 header, nav {
     margin-right: 20px;
 }
+
 ul.clips {
     max-width: 915px;
     column-count: 3;
@@ -76,7 +74,6 @@ ul.clips li a {
     left: 0;
     top: 0;
     /*! border: solid 1px; */
-    display: table-caption;
 }
 
 ul.clips img.background {
@@ -93,22 +90,22 @@ ul.clips img.foreground {
     top: 0;
 }
 
-ul.clips a:hover img.background {
-    display: block;
-}
-
-ul.clips a:hover h2 {
-    display: block;
-}
-
-
 ul.clips h2 {
     position: absolute;
     top: 0;
     left: 0;
     margin: 5px;
     color: white;
+    text-shadow: 1px 1px 1px #000000d6;
     display: none;
+}    
+
+ul.clips {
+    a:hover, a:focus {
+        img.background, h2 {
+            display: block;
+        }
+    }
 }
 
 
@@ -173,27 +170,45 @@ video {
     opacity: 0.65;
     margin-right: 4px;
   
-  }
-    
-  .wikipedia {
+}
+
+.wikipedia {
     background-color: white;
     color: black;
-  }
-    
-  .tmdb {
+}
+
+.tmdb {
     background-color: blue;
     color: white;
-  }
-    
-  .imdb {
+}
+
+.imdb {
     background-color: yellow;
     color: black;
-  }
-  
-  .extDb > a:hover {
+}
+
+.extDb > a:hover, .extDb > a:focus {
     text-decoration: none;
     opacity: 1;
-  }
+}
+
+
+/** AR INDEX */
+
+
+.ar {
+    background: var(--fg-color);
+    color: var(--bg-color);
+    display: block;
+    margin: 5px 0;
+    text-align: center;
+}
+
+a.ar:hover {
+    text-decoration: none;
+    outline: solid 1px var(--fg-color);
+    outline-offset: 1px;
+}
 
 
 /** MEDIA QUERIES */
