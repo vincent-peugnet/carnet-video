@@ -65,6 +65,7 @@ ul.clips {
 ul.clips li {
     margin-right: 10px;
     margin-bottom: 5px;
+    break-inside: avoid;
 }
 
 ul.clips li a {
