@@ -20,7 +20,6 @@ This programm is supposed to depend only on packages that are in Debian.
 - packages
     - ffmpeg
     - mediainfo
-    - gifsicle
     - imagemagick
     - jq
     - timg
@@ -31,7 +30,7 @@ This programm is supposed to depend only on packages that are in Debian.
 
 Command to install dependencies (on Debian)
 
-    sudo apt install ffmpeg mediainfo gifsicle imagemagick jq timg php composer
+    sudo apt install ffmpeg mediainfo imagemagick jq timg php composer
 
 
 ### Install
@@ -130,7 +129,7 @@ To lauch the build:
 
     ./build.sh
 
-This will first encode thumnails, gifs, and videos files. Then check for clip's movies. And finally generate HTML.
+This will first encode thumnails, previews (animated webp), and videos files. Then check for clip's movies. And finally generate HTML.
 
 
 ## Infos

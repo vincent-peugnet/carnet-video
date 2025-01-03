@@ -7,11 +7,8 @@ newLineIfFirst() {
     fi
 }
 
-echo -ne "🗜️  \033[1mmissing thumbnails or video files\033[0m"
+echo -ne "🗜️  \033[1mlooking for mmissing thumbnails, previews or video files\033[0m"
 
-rm -rf /tmp/carnet-video
-mkdir -p /tmp/carnet-video/thumbnail
-mkdir -p /tmp/carnet-video/clip
 
 mkdir -p build/assets/thumbnail
 mkdir -p build/assets/preview
@@ -25,9 +22,7 @@ do
 
     if test ! -f "build/assets/thumbnail/$id.webp"
     then
-        ffmpeg -hide_banner -loglevel error -ss 00:00:00 -i "$clip" -vf "scale='300:trunc(300/dar)',setsar=1/1" -frames:v 1 "/tmp/carnet-video/thumbnail/$id.png"
-        convert /tmp/carnet-video/thumbnail/$id.png -thumbnail 300x300 "/tmp/carnet-video/thumbnail/$id.webp"
-        mv "/tmp/carnet-video/thumbnail/$id.webp" "build/assets/thumbnail/$id.webp"
+        ffmpeg -hide_banner -loglevel error -ss 00:00:00 -i "$clip" -vf "scale='300:trunc(300/dar)',setsar=1/1" -frames:v 1 -compression_level 6 -q:v 70 "build/assets/thumbnail/$id.webp"
         newLineIfFirst
         echo "🖼️  generated webp thumbnail for clip #$id"
         let counter++
@@ -37,7 +32,7 @@ do
     then
         ffmpeg -hide_banner -loglevel error -ss 00:00:00 -to 00:00:05 -r 200 -i "$clip" -vf "scale='300:trunc(300/dar)',setsar=1/1" -compression_level 6 -q:v 35 -loop 1 -r 7 "build/assets/preview/$id.webp"
         newLineIfFirst
-        echo "🖼️  generated webp preview for clip #$id"
+        echo "📺️  generated webp animated preview for clip #$id"
         let counter++
     fi
     
@@ -52,10 +47,9 @@ do
             width=854
         fi
 
-        ffmpeg -hide_banner -loglevel error -i "$clip" -vf "scale='$width:trunc($width/dar)',setsar=1/1" -c:v libvpx -crf 10 -b:v 1500k -crf 30 -b:a 64k /tmp/carnet-video/clip/$id.webm
-        mv /tmp/carnet-video/clip/$id.webm build/assets/clip/$id.webm
+        ffmpeg -hide_banner -loglevel error -i "$clip" -vf "scale='$width:trunc($width/dar)',setsar=1/1" -c:v libvpx -crf 10 -b:v 1500k -crf 30 -b:a 64k "build/assets/clip/$id.webm"
         newLineIfFirst
-        echo "🎞️ generated compressed video for clip #$id"
+        echo "🎞️  generated compressed video for clip #$id"
         let counter++
     fi
 
@@ -70,7 +64,7 @@ done
 
 if test $counter = 0
 then
-    echo 'done !'
+    echo 'done!'
 else
     echo "done! encoded: $counter file(s)"
 fi
