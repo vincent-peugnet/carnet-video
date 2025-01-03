@@ -57,15 +57,18 @@ header, nav {
 }
 
 ul.clips {
-    max-width: 915px;
+    all: unset;
+    display: block;
+    width: 915px;
     column-count: 3;
-    column-gap: 0;
 }
 
 ul.clips li {
-    margin-right: 10px;
-    margin-bottom: 5px;
+    all: unset;
+    position: relative;
+    display: inline-block;
     break-inside: avoid;
+    margin-bottom: 6px;
 }
 
 ul.clips li a {
@@ -74,19 +77,20 @@ ul.clips li a {
     position: relative;
     left: 0;
     top: 0;
+    break-inside: avoid;
     /*! border: solid 1px; */
 }
 
 ul.clips img.preview {
     position: absolute;
-    left: 0;
     display: none;
+    left: 0;
     top: 0;
 }
 
 ul.clips img.thumbnail {
+    position: absolute;
     display: block;
-    position: relative;
     left: 0;
     top: 0;
 }
@@ -216,13 +220,14 @@ a.ar:hover {
 
 @media (max-width: 1000px) {
     ul.clips {
-        max-width: 610px;
+        width: 610px;
         column-count: 2;
     }
 }
 
 @media (max-width: 670px) {
     ul.clips {
+        width: 300px;
         column-count: 1;
     }
 }
