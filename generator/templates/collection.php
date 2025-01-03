@@ -5,7 +5,7 @@
 
 <?php $this->start('main') ?>
     <h1>
-        <a href="/collection/">Collections</a>
+        <a href="<?= $basePath ?>/collection/">Collections</a>
         >
         <span><?= $collection ?></span>
     </h1>

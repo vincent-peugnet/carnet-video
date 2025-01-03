@@ -5,7 +5,7 @@
 
 <?php $this->start('main') ?>
     <h1>
-        <a href="/tag/">Tags</a>
+        <a href="<?= $basePath ?>/tag/">Tags</a>
         >
         <span><?= $tag ?></span>
     </h1>

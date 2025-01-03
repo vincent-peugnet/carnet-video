@@ -62,6 +62,7 @@ Create base directories and files for "src" and "config".
 - Fill `config/newClip` with number `1`
 - Fill `config/importDirectory` with the temporary path where new video files are captured.
 It's recommended to use an absolute path (starting with a `/`)
+- If the site will be published inside subfolers, fill `config/basePath` with the name of the path that lead to the site. (⚠️ witout leading or trailing slashes)
 
 
 ## Use

@@ -5,7 +5,7 @@
 
 <?php $this->start('main') ?>
     <h1>
-        <a href="/ar/">Formats d'image</a>
+        <a href="<?= $basePath ?>/ar/">Formats d'image</a>
         >
         <span><?= $aspectRatio->ratio ?></span>
     </h1>

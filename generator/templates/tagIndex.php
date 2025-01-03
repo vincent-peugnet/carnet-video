@@ -10,7 +10,7 @@
 <ul class="index">
     <?php foreach ($tags as $tag) : ?>
         <li>
-            <a href="/tag/<?= $tag ?>/"><?= $tag ?></a>
+            <a href="<?= $basePath ?>/tag/<?= $tag ?>/"><?= $tag ?></a>
         </li>
         <?php endforeach ?>
     </ul>

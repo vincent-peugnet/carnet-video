@@ -10,7 +10,7 @@
 <ul class="index">
     <?php foreach ($collections as $collection => $clips) : ?>
         <li>
-            <a href="/collection/<?= $collection ?>/"><?= $collection ?></a>
+            <a href="<?= $basePath ?>/collection/<?= $collection ?>/"><?= $collection ?></a>
         </li>
         <?php endforeach ?>
     </ul>

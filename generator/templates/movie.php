@@ -5,7 +5,7 @@
 
 <?php $this->start('main') ?>
     <h1>
-        <a href="/movie/">Films</a>
+        <a href="<?= $basePath ?>/movie/">Films</a>
         >
         <span><?= $movie->title ?></span>
     </h1>

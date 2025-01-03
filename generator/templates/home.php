@@ -18,11 +18,11 @@
 
     <nav>
         <ul class="index">
-            <li><a href="/clip/">tout les extraits</a></li>
-            <li><a href="/tag/">tags</a></li>
-            <li><a href="/collection/">collections</a></li>
-            <li><a href="/movie/">films</a></li>
-            <li><a href="/ar/">formats d'image</a></li>
+            <li><a href="<?= $basePath ?>/clip/">tout les extraits</a></li>
+            <li><a href="<?= $basePath ?>/tag/">tags</a></li>
+            <li><a href="<?= $basePath ?>/collection/">collections</a></li>
+            <li><a href="<?= $basePath ?>/movie/">films</a></li>
+            <li><a href="<?= $basePath ?>/ar/">formats d'image</a></li>
         </ul>
     </nav>
 

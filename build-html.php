@@ -21,8 +21,16 @@ function delTree(string $dir)
 }
 
 require('./vendor/autoload.php');
+
+if (is_file('config/basePath')) {
+    $basePath = trim(file_get_contents('config/basePath'), " \n\r\t\v\0/");
+    $basePath = empty($basePath) ? '' : "/$basePath";
+} else {
+    $basePath = '';
+}
+
 $templates = new Engine('generator/templates');
-$templates->addData(['stylesheet' => null]);
+$templates->addData(['stylesheet' => null, 'basePath' => $basePath]);
 
 
 /**

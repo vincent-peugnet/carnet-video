@@ -10,7 +10,7 @@
 <ul class="index">
     <?php foreach ($movies as $id => $movie) : ?>
         <li>
-            <a href="/movie/<?= $id ?>/">
+            <a href="<?= $basePath ?>/movie/<?= $id ?>/">
                 <?= $movie->title ?>
                 <span class="year"><?= $movie->year ?></span>
             </a>
