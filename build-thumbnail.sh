@@ -30,9 +30,9 @@ do
 
     if test ! -f "build/assets/preview/$id.webp"
     then
-        ffmpeg -hide_banner -loglevel error -ss 00:00:00 -to 00:00:05 -r 200 -i "$clip" -vf "scale='300:trunc(300/dar)',setsar=1/1" -compression_level 6 -q:v 35 -loop 1 -r 7 "build/assets/preview/$id.webp"
+        ffmpeg -hide_banner -loglevel error -ss 00:00:00 -to 00:00:05 -r 200 -i "$clip" -vf "scale='300:trunc(300/dar)',setsar=1/1" -compression_level 6 -q:v 50 -loop 1 -r 7 "build/assets/preview/$id.webp"
         newLineIfFirst
-        echo "📺️  generated webp animated preview for clip #$id"
+        echo "📺️ generated webp animated preview for clip #$id"
         let counter++
     fi
     

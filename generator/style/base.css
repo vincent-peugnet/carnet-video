@@ -77,14 +77,14 @@ ul.clips li a {
     /*! border: solid 1px; */
 }
 
-ul.clips img.background {
+ul.clips img.preview {
     position: absolute;
     left: 0;
     display: none;
     top: 0;
 }
 
-ul.clips img.foreground {
+ul.clips img.thumbnail {
     display: block;
     position: relative;
     left: 0;
@@ -103,7 +103,7 @@ ul.clips h2 {
 
 ul.clips {
     a:hover, a:focus {
-        img.background, h2 {
+        img.preview, h2 {
             display: block;
         }
     }
