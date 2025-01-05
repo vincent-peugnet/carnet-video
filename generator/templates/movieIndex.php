@@ -1,6 +1,6 @@
 <?php
     $title = "movie index";
-    $this->layout('general', ['title' => $title]);
+    $this->layout('general', ['title' => $title, 'currentPath' => '/movie/']);
 ?>
 
 <?php $this->start('main') ?>

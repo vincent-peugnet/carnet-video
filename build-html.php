@@ -316,6 +316,7 @@ if (!is_dir("build/assets")) {
     mkdir("build/assets");
 }
 copy('generator/style/base.css', 'build/assets/base.css');
+copy('generator/javascript/script.js', 'build/assets/script.js');
 print '.';
 
 

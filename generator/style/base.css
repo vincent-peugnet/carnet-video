@@ -1,6 +1,6 @@
 * {
-    --bg-color: #0c1a3c;
-    --fg-color: #fa7eff;
+    --bg-color: #151515;
+    --fg-color: #c4c4c4;
 }
 
 html, body {
@@ -9,7 +9,7 @@ html, body {
 
 body {
     font-family: "Liberation sans", sans;
-    margin: 0 3%;
+    margin: 0 20px;
     background-color: var(--bg-color);
     color: var(--fg-color);
     display: flex;
@@ -30,7 +30,7 @@ a {
     text-decoration: none;
 }
 
-a:hover {
+main a:hover {
     text-decoration: underline;
 }
 
@@ -48,12 +48,18 @@ header h1 {
     text-transform: uppercase;
 }
 
-header nav a {
-    margin-right: 7px;
+header nav {
+    display: flex;
 }
 
-header, nav {
-    margin-right: 20px;
+header nav a {
+    padding: 2px 8px;
+    margin-right: 1px;
+}
+
+header nav a.current, header nav a:hover {
+    background-color: var(--fg-color);
+    color: var(--bg-color);
 }
 
 ul.clips {
@@ -115,11 +121,28 @@ span.year {
     font-size: 0.8em;
 }
 
+button {
+    color: var(--fg-color);
+    background-color: var(--bg-color);
+    border: solid 1px var(--fg-color);
+    border-radius: 0;
+}
+
+button:hover {
+    cursor: pointer;
+    color: var(--bg-color);
+    background-color: var(--fg-color);
+}
+
 /** HOME */
 
 
 main.home {
     max-width: 533px;
+}
+
+main.home nav {
+    display: block;
 }
 
 
@@ -128,17 +151,19 @@ main.home nav a {
     margin: 10px 0px;
     background: var(--fg-color);
     color: var(--bg-color);
+    border: solid 1px var(--fg-color);
     padding: 6px 10px;
     display: block;
-    opacity: 0.8;
 }
   
 main.home nav a:hover {
     text-decoration: none;
-    opacity: 1;
     background: var(--bg-color);
     color: var(--fg-color);
-    outline: solid 1px;
+}
+
+main.home p.terms {
+    font-size: 0.8em;
 }
 
 /** CLIP */
@@ -163,6 +188,10 @@ video {
 .infos > * {
     margin: 4px 0;
 }
+
+.extDb {
+    margin: 7px 0;
+  }
 
 /** Movie external databases */
 
@@ -215,6 +244,7 @@ a.ar:hover {
 /** MEDIA QUERIES */
 
 @media (max-width: 1000px) {
+
     ul.clips {
         max-width: 610px;
         column-count: 2;
@@ -222,6 +252,10 @@ a.ar:hover {
 }
 
 @media (max-width: 670px) {
+    body {
+        margin: 0 5px;
+    }
+
     ul.clips {
         column-count: 1;
     }

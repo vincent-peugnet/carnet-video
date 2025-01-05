@@ -1,6 +1,6 @@
 <?php
     $title = "collection index";
-    $this->layout('general', ['title' => $title]);
+    $this->layout('general', ['title' => $title, 'currentPath' => '/collection/']);
 ?>
 
 <?php $this->start('main') ?>

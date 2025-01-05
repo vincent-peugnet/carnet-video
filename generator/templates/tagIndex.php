@@ -1,6 +1,6 @@
 <?php
     $title = "tag index";
-    $this->layout('general', ['title' => $title]);
+    $this->layout('general', ['title' => $title, 'currentPath' => '/tag/']);
 ?>
 
 <?php $this->start('main') ?>

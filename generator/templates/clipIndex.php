@@ -1,20 +1,13 @@
 <?php
     $title = "index";
-    $this->layout('general', ['title' => $title]);
+    $this->layout('general', ['title' => $title, 'currentPath' => '/clip/', 'scripts']);
 ?>
 
 <?php $this->start('main') ?>
-<h1>
-    Extraits
-</h1>
-<ul class="clips">
-    <?php foreach ($clips as $clip) : ?>
-        <li>
-            <?php $this->insert('clipThumbnail', ['clip' => $clip]) ?>
-        </li>
-        <?php endforeach ?>
-    </ul>
+
+    <h1>
+        Extraits
+    </h1>
+    <?php $this->insert('clipList', ['clips' => $clips]) ?>
+
 <?php $this->stop() ?>
-
-
-        

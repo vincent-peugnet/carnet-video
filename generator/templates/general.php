@@ -1,6 +1,6 @@
 <?php $this->layout('base', ['title' => $title]) ?>
 <?php $this->start('body') ?>
-    <?=$this->insert('header')?>
+    <?=$this->insert('header', ['currentPath' => isset($currentPath) ? $currentPath : null])?>
     <main>
         <?=$this->section('main')?>
     </main>

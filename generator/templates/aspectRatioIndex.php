@@ -1,6 +1,6 @@
 <?php
     $title = "ar index";
-    $this->layout('general', ['title' => $title]);
+    $this->layout('general', ['title' => $title, 'currentPath' => '/ar/']);
 ?>
 
 <?php $this->start('main') ?>
