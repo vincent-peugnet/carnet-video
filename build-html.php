@@ -137,7 +137,7 @@ function getClips() : array
         $json = json_decode(file_get_contents($path), true);
         $clips[$id] = new Clip($id, $json);
     }
-    ksort($clips);
+    krsort($clips);
     return $clips;
 }
 
