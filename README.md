@@ -1,13 +1,19 @@
 # Carnet Video
 
-Movie clip notebook static site generator.
+This is a custom static site generator coded for the website: <https://vincent.club1.fr/carnet-video/>
 
-Generate a Web interface for a database of movie clips.
-Management is done thanks to an interactive CLI.
+It produce a movie clip notebook accessible from the Web from a folder containing videos file and JSON metadata.
+Management is done thanks to an interactive CLI (this get close to a TUI)
 
-It goes allong with some scripts to capture the video clips from movies.
+It goes allong with some scripts to capture the video clips from movies using MPV plugins.
 See [CAPTURE.md](CAPTURE.md), for more info about this part.
 
+## ⚠️ limitation
+
+Currently the **HTML templates are hardcoded in french** (home page is hardcoded too).
+It's done like this as I'm the only user of this tool.
+If you're interested in using it, please contact me at <vincent+carnet@club1.fr>.
+It may be motivating enough for me to find a way to include other users !
 
 ## Setup
 
@@ -15,7 +21,8 @@ Installation process (for Debian or derivates)
 
 ### Dependencies
 
-This programm is supposed to depend only on packages that are in Debian.
+This programm is supposed to depend only on packages that are in Debian. (that's a design strategy)
+It use composer to call a few PHP packages.
 
 - packages
     - ffmpeg
@@ -135,7 +142,6 @@ This will first encode thumnails, previews (animated webp), and videos files. Th
 
 ## Infos
 
-More infos about how this program do things
 
 ### Encoding
 
