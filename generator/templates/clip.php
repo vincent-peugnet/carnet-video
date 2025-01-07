@@ -1,5 +1,5 @@
 <?php
-    $title = "clip $clip->id";
+    $title = "extrait $clip->id";
     $this->layout('general', ['title' => $title]);
 ?>
 

@@ -1,5 +1,5 @@
 <?php
-    $title = "collection index";
+    $title = 'collections';
     $this->layout('general', ['title' => $title, 'currentPath' => '/collection/']);
 ?>
 

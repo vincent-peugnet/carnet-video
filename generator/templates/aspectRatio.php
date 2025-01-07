@@ -1,5 +1,5 @@
 <?php
-    $title = "AR $aspectRatio->ratio";
+    $title = "format $aspectRatio->ratio";
     $this->layout('general', ['title' => $title]);
 ?>
 

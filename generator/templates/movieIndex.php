@@ -1,5 +1,5 @@
 <?php
-    $title = "movie index";
+    $title = "films";
     $this->layout('general', ['title' => $title, 'currentPath' => '/movie/']);
 ?>
 

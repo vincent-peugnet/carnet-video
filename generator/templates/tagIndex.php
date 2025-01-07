@@ -1,5 +1,5 @@
 <?php
-    $title = "tag index";
+    $title = 'tags';
     $this->layout('general', ['title' => $title, 'currentPath' => '/tag/']);
 ?>
 

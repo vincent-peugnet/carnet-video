@@ -1,5 +1,5 @@
 <?php
-    $title = 'Home';
+    $title = 'carnet vidéo';
     $this->layout('base', ['title' => $title]);
 ?>
 

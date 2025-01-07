@@ -1,5 +1,5 @@
 <?php
-    $title = "index";
+    $title = 'extraits';
     $this->layout('general', ['title' => $title, 'currentPath' => '/clip/', 'scripts']);
 ?>
 

@@ -1,5 +1,5 @@
 <?php
-    $title = "ar index";
+    $title = 'formats';
     $this->layout('general', ['title' => $title, 'currentPath' => '/ar/']);
 ?>
 
