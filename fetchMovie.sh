@@ -2,7 +2,7 @@
 
 if test -z $1
 then
-    echo 'Please provide a integer as first argument'
+    echo 'Please provide a movie ID string as first argument'
     exit 1
 fi
 
@@ -18,7 +18,7 @@ fi
 movieJson=$(curl -s "https://www.wikidata.org/wiki/Special:EntityData/$1.json")
 
 
-instanceOf=$(echo $movieJson | jq -r ".entities.$1.claims.P31[0].mainsnak.datavalue.value.id")
+instanceOf=$(echo "$movieJson" | jq -r ".entities.$1.claims.P31[0].mainsnak.datavalue.value.id")
 
 
 # Q11424    film
@@ -31,19 +31,20 @@ then
     exit 1
 fi
 
-
-pageId=$(echo $movieJson | jq ".entities.$1.pageid // \"\"")
-movieLabelFr=$(echo $movieJson | jq -r ".entities.$1.labels.fr.value")
-originalTitle=$(echo $movieJson | jq -r ".entities.$1.claims.P1476[0].mainsnak.datavalue.value.text // \"\"")
-frWiki=$(echo $movieJson | jq -r ".entities.$1.sitelinks.frwiki.url // \"\"")
-date=$(echo $movieJson | jq -r ".entities.$1.claims.P577[0].mainsnak.datavalue.value.time // \"\"")
-imdb=$(echo $movieJson | jq -r ".entities.$1.claims.P345[0].mainsnak.datavalue.value // \"\"")
-tmdb=$(echo $movieJson | jq -r ".entities.$1.claims.P4947[0].mainsnak.datavalue.value // \"\"")
+# Fetch main datas
+#
+# `// \"\"` This strange syntax allow to output an empty string if key do not exist or value is null
+movieLabelFr=$(echo "$movieJson" | jq -r ".entities.$1.labels.fr.value // \"\"")
+originalTitle=$(echo "$movieJson" | jq -r ".entities.$1.claims.P1476[0].mainsnak.datavalue.value.text // \"\"")
+frWiki=$(echo "$movieJson" | jq -r ".entities.$1.sitelinks.frwiki.url // \"\"")
+date=$(echo "$movieJson" | jq -r ".entities.$1.claims.P577[0].mainsnak.datavalue.value.time // \"\"")
+imdb=$(echo "$movieJson" | jq -r ".entities.$1.claims.P345[0].mainsnak.datavalue.value // \"\"")
+tmdb=$(echo "$movieJson" | jq -r ".entities.$1.claims.P4947[0].mainsnak.datavalue.value // \"\"")
 
 
 # Get IDs that we will use to do some other requests
-directorIds=$(echo $movieJson | jq -r ".entities.$1.claims.P57[].mainsnak.datavalue.value.id // \"\"")
-dopId=$(echo $movieJson | jq -r ".entities.$1.claims.P344[0].mainsnak.datavalue.value.id // \"\"")
+directorIds=$(echo "$movieJson" | jq -r ".entities.$1.claims.P57[].mainsnak.datavalue.value.id // \"\"")
+dopId=$(echo "$movieJson" | jq -r ".entities.$1.claims.P344[0].mainsnak.datavalue.value.id // \"\"")
 
 
 # Original title, directors and release year are mandatory
@@ -63,7 +64,7 @@ directors=()
 for directorId in "${directorIds[@]}"
 do
     directorJson=$(curl -s "https://www.wikidata.org/wiki/Special:EntityData/$directorId.json")
-    directorLabelFr=$(echo $directorJson | jq -r ".entities.$directorId.labels.fr.value")
+    directorLabelFr=$(echo "$directorJson" | jq -r ".entities.$directorId.labels.fr.value")
     directors+=("$directorLabelFr")
 done
 
@@ -74,7 +75,7 @@ directorsJson=$(jq --compact-output --null-input '$ARGS.positional' --args -- "$
 if test -n "$dopId"
 then
     dopJson=$(curl -s "https://www.wikidata.org/wiki/Special:EntityData/$dopId.json")
-    dopLabelFr=$(echo $dopJson | jq -r ".entities.$dopId.labels.fr.value")
+    dopLabelFr=$(echo "$dopJson" | jq -r ".entities.$dopId.labels.fr.value // \"\"")
 else
     dopLabelFr=''
 fi
