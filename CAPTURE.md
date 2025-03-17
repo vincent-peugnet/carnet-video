@@ -27,24 +27,13 @@ In order to customize encoding and output settings, a configuration file should 
 
 Here is the config best suited to work with this program.
 
-    # format of the output filename
-    # Use an incremental number
     output_format=$n.mkv
-
-    # where to put the file
-    # should be pointed to "src/clips"
-    output_directory=<PATH/TO/SRC/CLIPS>
-
-
-    # Only copy one video and one audio stream
-    # Video is lossy X264 with CRF 18,to obtain a decent quality
-    # Audio is lossy good quality OPUS 
-    codec=-map -0 -map 0:v:0 -map 0:a:0? -ac 1 -map_metadata -1 -c:v libx264 -preset slow -crf 18 -b:a 160k
-
+    output_directory=~/videos/carnet
+    codec=-map -0 -map 0:v:0? -map 0:a:0? -sn -dn -ac 1 -map_metadata -1 -c:v libx264 -preset slow -crf 18 -b:a 160k
 
 ### input.conf
 
-Key binding to trigger the script have to be defined in this main config:
+Key binding to trigger the encode script have to be defined in this main config:
 
     ~/.config/mpv/input.conf
 
@@ -53,6 +42,21 @@ Encoding script and custom configuration have to be specified like this (withouf
     e script-message-to encode set-timestamp <encode_custom_conf>
 
 Here, the key `e` is defined to lauch the script in point. 
+
+
+## Auto crop
+
+For movies that have black bars or that mix multiple aspect ratios,
+It's convenient to crop the video before encoding clips.
+
+To achieve this, we can use the wonderfull script provided by Ashyni:
+
+<https://github.com/Ashyni/mpv-scripts>/`dynamic-crop.lua`
+
+This will automatically detect the aspect ratio and crop the movie at any playback position.
+It only work when hardware acceleration is off. (<kbd>Ctrl</kbd> + <kbd>H</kbd> to toogle)
+
+<kbd>Shift</kbd> + <kbd>C</kbd> will cycle through croping modes.
 
 
 ## Frame by frame naviguation
