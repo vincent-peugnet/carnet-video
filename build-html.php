@@ -20,6 +20,36 @@ function delTree(string $dir)
     }
 }
 
+/**
+ * @param int $current Current clip ID
+ * @param Clip[] Associative array where key is clip int ID and value is a Clip object
+ */
+function getPreviousClip(int $current, array $clips): ?Clip
+{
+    for ($i=1; $i < 15; $i++) { 
+        $id = $current - $i;
+        if (isset($clips[$id])) {
+            return $clips[$id];
+        }
+    }
+    return null;
+}
+
+/**
+ * @param int $current Current clip ID
+ * @param Clip[] Associative array where key is clip int ID and value is a Clip object
+ */
+function getNextClip(int $current, array $clips): ?Clip
+{
+    for ($i=1; $i < 15; $i++) { 
+        $id = $current + $i;
+        if (isset($clips[$id])) {
+            return $clips[$id];
+        }
+    }
+    return null;
+}
+
 require('./vendor/autoload.php');
 
 if (is_file('config/basePath')) {
@@ -108,7 +138,7 @@ function getAspectRatios() : array
 /**
  * MOVIES
  *
- * @return array[] Associative array where key is movie int ID and value is an array containting metadata 
+ * @return Movie[] Associative array where key is movie int ID and value is a Movie object 
  **/
 function getMovies() : array
 {
@@ -126,7 +156,7 @@ function getMovies() : array
 /**
  * CLIPS
  *
- * @return Clip[] Associative array where key is clip int ID and value is an array containting metadata 
+ * @return Clip[] Associative array where key is clip int ID and value is a Clip object
  **/
 function getClips() : array
 {
@@ -170,7 +200,15 @@ function buildClips(array $clips, array $collectionsIndex, array $movies, array 
         } else {
             $matchedAspectRatio = null;
         }
-        $html = $templates->render('clip', ['clip' => $clip, 'collections' => $collections, 'movie' => $movie, 'aspectRatio' => $matchedAspectRatio]);
+
+        $html = $templates->render('clip', [
+            'clip' => $clip,
+            'prev' => getPreviousClip($id, $clips),
+            'next' => getNextClip($id, $clips),
+            'collections' => $collections,
+            'movie' => $movie,
+            'aspectRatio' => $matchedAspectRatio,
+        ]);
         if (!is_dir("build/clip/$id")) {
             mkdir("build/clip/$id", 0777, true);
         }
@@ -276,6 +314,7 @@ function buildCollections(array $collections, array $clips): void
 }
 
 /**
+ * @param Movie[] $movies
  * @param Clip[] $clips
  */
 function buildMovies(array $movies, array $clips): void

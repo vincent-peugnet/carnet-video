@@ -8,6 +8,22 @@
         <a href="<?= $basePath ?>/clip/">Extraits</a>
         >
         <span># <?= $clip->id ?></span>
+        <span class="float">
+            <a
+                <?php if ($prev !== null) : ?>
+                    href="/clip/<?= $prev->id ?? '' ?>/"
+                <?php else: ?>
+                    class="inactive"
+                <?php endif; ?>
+            >◂</a>
+            <a
+                <?php if ($next !== null) : ?>
+                    href="/clip/<?= $next->id ?? '' ?>/"
+                <?php else: ?>
+                    class="inactive"
+                <?php endif; ?>
+            >▸</a>
+        </span>
     </h1>
     <video muted controls autoplay loop>
         <source src="<?= $basePath ?>/assets/clip/<?= $clip->id ?>.webm" type="video/webm" />
