@@ -11,14 +11,14 @@
         <span class="float">
             <a
                 <?php if ($prev !== null) : ?>
-                    href="/clip/<?= $prev->id ?? '' ?>/"
+                    href="<?= $basePath ?>/clip/<?= $prev->id ?? '' ?>/"
                 <?php else: ?>
                     class="inactive"
                 <?php endif; ?>
             >◂</a>
             <a
                 <?php if ($next !== null) : ?>
-                    href="/clip/<?= $next->id ?? '' ?>/"
+                    href="<?= $basePath ?>/clip/<?= $next->id ?? '' ?>/"
                 <?php else: ?>
                     class="inactive"
                 <?php endif; ?>
