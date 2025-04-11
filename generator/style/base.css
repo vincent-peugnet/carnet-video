@@ -200,6 +200,12 @@ ul.clips li[data-filter="0"] {
     display: none;
 }
 
+main aside {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 /** MOVIE */
 
 

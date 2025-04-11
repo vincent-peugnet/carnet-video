@@ -39,21 +39,26 @@ function filterClips() {
 
     let lis = document.querySelectorAll('ul.clips li');
 
+    let clipCounter = 0;
     // If no tag is checked
     if (clips === null) {
         for (var li of lis) {
             li.removeAttribute('data-filter');
+            clipCounter++;
         }
-        return;
+    } else {
+        for (var li of lis) {
+            if (clips.has(Number(li.id))) {
+                li.setAttribute('data-filter', '1');
+                clipCounter++;
+            } else {
+                li.setAttribute('data-filter', '0');
+            }
+        }
     }
 
-    for (var li of lis) {
-        if (clips.has(Number(li.id))) {
-            li.setAttribute('data-filter', '1');
-        } else {
-            li.setAttribute('data-filter', '0');
-        }
-    }
+    let clipCount = document.querySelector('#clipCount');
+    clipCount.textContent = clipCounter;
 
 }
 

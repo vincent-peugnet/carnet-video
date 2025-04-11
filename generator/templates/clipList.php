@@ -1,4 +1,7 @@
-<button id="shuffleClips">⤭ mélanger</button>
+<aside>
+    <span class="info"><span id="clipCount"><?= count($clips) ?></span> extrait(s)</span>
+    <button id="shuffleClips">⤭ mélanger</button>
+</aside>
 <ul class="clips">
     <?php foreach ($clips as $clip) : ?>
         <li id="<?= $clip->id ?>">
