@@ -6,5 +6,6 @@
     <?php if ($stylesheet !== null) : ?>
         <link rel="stylesheet" href="<?= $basePath ?>/assets/<?= $stylesheet ?>">
     <?php endif ?>
+    <script src="<?= $basePath ?>/assets/tags.js" async></script>
     <script src="<?= $basePath ?>/assets/script.js" async></script>
 </head>

@@ -14,6 +14,7 @@ body {
     color: var(--fg-color);
     display: flex;
     flex-direction: column;
+    accent-color: var(--fg-color);
 }
 
 .spacer {
@@ -37,6 +38,10 @@ main a:hover {
 ul {
     list-style: none;
     padding: 0;
+}
+
+main {
+    max-width: 915px;
 }
 
 main .index li {
@@ -121,11 +126,18 @@ span.year {
     font-size: 0.8em;
 }
 
-button {
+button, summary {
     color: var(--fg-color);
     background-color: var(--bg-color);
     border: solid 1px var(--fg-color);
     border-radius: 0;
+    padding: 3px;
+    margin: 2px;
+    display: block;
+    width: fit-content;
+    font-family: inherit;
+    font-size: 1em;
+    cursor: pointer;
 }
 
 button:hover {
@@ -175,6 +187,17 @@ div.tags a {
 video {
     max-width: max-content;
     width: 100%;
+}
+
+
+/** CLIP FILTERING **/
+
+div#filterForm {
+    columns: 3;
+}
+
+ul.clips li[data-filter="0"] {
+    display: none;
 }
 
 /** MOVIE */
@@ -245,19 +268,22 @@ a.ar:hover {
 
 @media (max-width: 1000px) {
 
-    ul.clips {
+    main {
         max-width: 610px;
+    }
+
+    ul.clips, div#filterForm {
         column-count: 2;
     }
 }
 
 @media (max-width: 670px) {
+
     body {
         margin: 0 5px;
     }
 
-    ul.clips {
+    ul.clips, div#filterForm {
         column-count: 1;
     }
 }
-

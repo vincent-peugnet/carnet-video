@@ -1,7 +1,6 @@
 const buttonShuffleClips = document.getElementById("shuffleClips");
 
 
-
 // Shuffles elements in a list
 // By - Yair Even Or
 function shuffleClips() {
@@ -15,6 +14,49 @@ function shuffleClips() {
     ul.parentNode.replaceChild(temp, ul); // copy shuffled back to 'ul'
 }
 
-// document.addEventListener('DOMContentLoaded', shuffleClips, false);
-
 buttonShuffleClips.addEventListener('click', shuffleClips);
+
+
+
+
+const buttonFilterClips = document.getElementById('filterForm');
+
+function filterClips() {
+
+    let tagCheckboxesChecked = document.querySelectorAll('input.tag:checked');
+
+    let clips = null;
+    for (var checkedTag of tagCheckboxesChecked) {
+
+        if (clips === null) {
+            clips = tags[checkedTag.value];
+        } else if (clips instanceof Set) {
+            clips = clips.intersection(tags[checkedTag.value]);
+        } else {
+            console.log('clips is nor null nor Set');
+        }
+    }
+
+    let lis = document.querySelectorAll('ul.clips li');
+
+    // If no tag is checked
+    if (clips === null) {
+        for (var li of lis) {
+            li.removeAttribute('data-filter');
+        }
+        return;
+    }
+
+    for (var li of lis) {
+        if (clips.has(Number(li.id))) {
+            li.setAttribute('data-filter', '1');
+        } else {
+            li.setAttribute('data-filter', '0');
+        }
+    }
+
+}
+
+buttonFilterClips.addEventListener('click', filterClips);
+
+

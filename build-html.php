@@ -154,7 +154,7 @@ function removeHtmlBuild(): void
  * @param AspectRatio[] $aspectRatios
  * @param Clip[] $clips
  */
-function buildClips(array $clips, array $collectionsIndex, array $movies, array $aspectRatios): void
+function buildClips(array $clips, array $collectionsIndex, array $movies, array $aspectRatios, array $tags): void
 {
     global $templates;
     mkdir('build/clip');
@@ -177,7 +177,7 @@ function buildClips(array $clips, array $collectionsIndex, array $movies, array 
         file_put_contents("build/clip/$id/index.html", $html);
     }
 
-    $html = $templates->render('clipIndex', ['clips' => $clips]);
+    $html = $templates->render('clipIndex', ['clips' => $clips, 'tags' => $tags]);
     file_put_contents("build/clip/index.html", $html);
 }
 
@@ -189,11 +189,15 @@ function buildTags(array $tags, array $clips): void
 {
     global $templates;
     mkdir('build/tag');
+    $tagIndex = [];
+    $tagSet = [];
     foreach ($tags as $tag) {
         $filteredClips = [];
+        $filterdIds = [];
         foreach ($clips as $clip) {
             if (in_array($tag, $clip->tags)) {
                 $filteredClips[] = $clip;
+                $filterdIds[] = $clip->id;
             }
         }
         $html = $templates->render('tag', ['tag' => $tag, 'clips' => $filteredClips]);
@@ -201,7 +205,15 @@ function buildTags(array $tags, array $clips): void
             mkdir("build/tag/$tag");
         }
         file_put_contents("build/tag/$tag/index.html", $html);
+
+        sort($filterdIds);
+        $filterdIdsJson = json_encode($filterdIds);
+
+        $tagSet[] = "\"$tag\" : new Set($filterdIdsJson)";
     }
+
+    $js = 'const tags = {' . implode(",\n", $tagSet) . '}';
+    file_put_contents("build/assets/tags.js", $js);
 
     $html = $templates->render('tagIndex', ['tags' => $tags]);
     file_put_contents("build/tag/index.html", $html);
@@ -295,7 +307,7 @@ print "🚀 \033[1mbuilding HTML\033[0m";
 
 removeHtmlBuild();
 print '.';
-buildClips($clips, $collectionsIndex, $movies, $aspectRatios);
+buildClips($clips, $collectionsIndex, $movies, $aspectRatios, $tags);
 print '.';
 buildTags($tags, $clips);
 print '.';
