@@ -1,4 +1,4 @@
-const buttonShuffleClips = document.getElementById("shuffleClips");
+const buttonShuffleClips = document.querySelector('#shuffleClips');
 
 
 // Shuffles elements in a list
@@ -41,8 +41,8 @@ const buttonFilterClips = document.querySelector('#filterPanel form');
 
 function filterClips() {
 
+    // read checkboxes and fill clips var with filtered clips
     let tagCheckboxesChecked = document.querySelectorAll('input.tag:checked');
-
     let clips = null;
     let checkedTags = [];
     for (var checkedTag of tagCheckboxesChecked) {
@@ -56,18 +56,16 @@ function filterClips() {
         }
     }
 
-    // document.location.search = 'caca';
-    // document.location.hash = 'pipi';
+    // Update URL params
     let path = document.location.pathname;
     let search = document.location.search;
     let params = new URLSearchParams(search);
-    let oldTags = params.get('tags') ?? '';
     params.set('tags', checkedTags.join(' '));
     search = '?'+params.toString();
-    history.pushState({}, '', path+search);
+    history.replaceState({}, '', path+search);
 
+    // Manage which clips should be displayed or not
     let lis = document.querySelectorAll('ul.clips li');
-
     let clipCounter = 0;
     // If no tag is checked
     if (clips === null) {
@@ -89,6 +87,7 @@ function filterClips() {
         }
     }
 
+    // Update clip counter
     let clipCount = document.querySelector('#clipCount');
     clipCount.textContent = clipCounter;
 
