@@ -8,16 +8,16 @@
     <h1>
         Extraits
     </h1>
-    <details>
+    <details id="filterPanel">
         <summary>⇟ filtrer</summary>
-        <div id="filterForm">
+        <form>
             <?php foreach ($tags as $tag) : ?>
                 <div>
                     <input type="checkbox" value="<?= $tag ?>" id="tag-<?= $tag ?>" class="tag">
                     <label for="tag-<?= $tag ?>"><?= $tag ?></label>
                 </div>
             <?php endforeach ?>
-        </div>
+            </form>
     </details>
     <?php $this->insert('clipList', ['clips' => $clips]) ?>
 

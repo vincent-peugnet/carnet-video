@@ -29,12 +29,17 @@
         <source src="<?= $basePath ?>/assets/clip/<?= $clip->id ?>.webm" type="video/webm" />
     </video>
     <p><?= $clip->description ?></p>
+
     <div class="tags">
         <h2>Tags</h2>
-        <?php foreach ($clip->tags as $tag) : ?>
-            <a href="<?= $basePath ?>/tag/<?= $tag ?>/"><?= $tag ?></a>
-        <?php endforeach ?>
+        <span>
+            <?php foreach ($clip->tags as $tag) : ?>
+                <a href="<?= $basePath ?>/tag/<?= $tag ?>/"><?= $tag ?></a>
+            <?php endforeach ?>
+            </span>
+        <a class="button" href="<?= $basePath . '/clip/?tags=' . urlencode(implode(' ', $clip->tags)) ?>">✻</a>
     </div>
+
     <?php if ($movie !== null) : ?>
         <div class="movie">
             <h2>Film</h2>

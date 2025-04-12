@@ -144,7 +144,7 @@ button, summary {
     cursor: pointer;
 }
 
-button:hover {
+button:hover, summary:hover {
     cursor: pointer;
     color: var(--bg-color);
     background-color: var(--fg-color);
@@ -205,7 +205,7 @@ h1 .float a:hover {
 
 /** CLIP FILTERING **/
 
-div#filterForm {
+#filterPanel form {
     columns: 3;
 }
 
@@ -291,7 +291,7 @@ a.ar:hover {
         max-width: 610px;
     }
 
-    ul.clips, div#filterForm {
+    ul.clips, #filterPanel form {
         column-count: 2;
     }
 }
@@ -302,7 +302,7 @@ a.ar:hover {
         margin: 0 5px;
     }
 
-    ul.clips, div#filterForm {
+    ul.clips, #filterPanel form {
         column-count: 1;
     }
 }

@@ -18,16 +18,35 @@ buttonShuffleClips.addEventListener('click', shuffleClips);
 
 
 
+function readUrlParams() {
+    let params = new URL(document.location).searchParams;
+    let urlTags = params.get("tags");
+    if (urlTags === null) {
+        return;
+    }
+    urlTags = urlTags.split(' ');
+    for (var urlTag of urlTags) {
+        let query = 'input.tag[value="'+urlTag+'"]';
+        let tagCheckbox = document.querySelector(query);
+        tagCheckbox.checked = true;
+    }
+    let filterPanel = document.querySelector('details#filterPanel');
+    filterPanel.open = true;
+    filterClips();
+}
 
-const buttonFilterClips = document.getElementById('filterForm');
+
+
+const buttonFilterClips = document.querySelector('#filterPanel form');
 
 function filterClips() {
 
     let tagCheckboxesChecked = document.querySelectorAll('input.tag:checked');
 
     let clips = null;
+    let checkedTags = [];
     for (var checkedTag of tagCheckboxesChecked) {
-
+        checkedTags.push(checkedTag.value);
         if (clips === null) {
             clips = tags[checkedTag.value];
         } else if (clips instanceof Set) {
@@ -37,22 +56,35 @@ function filterClips() {
         }
     }
 
+    // document.location.search = 'caca';
+    // document.location.hash = 'pipi';
+    let path = document.location.pathname;
+    let search = document.location.search;
+    let params = new URLSearchParams(search);
+    let oldTags = params.get('tags') ?? '';
+    params.set('tags', checkedTags.join(' '));
+    search = '?'+params.toString();
+    history.pushState({}, '', path+search);
+
     let lis = document.querySelectorAll('ul.clips li');
 
     let clipCounter = 0;
     // If no tag is checked
     if (clips === null) {
         for (var li of lis) {
-            li.removeAttribute('data-filter');
+            // li.removeAttribute('data-filter');
+            delete li.dataset.filter;
             clipCounter++;
         }
     } else {
         for (var li of lis) {
             if (clips.has(Number(li.id))) {
-                li.setAttribute('data-filter', '1');
+                // li.setAttribute('data-filter', '1');
+                li.dataset.filter = 1;
                 clipCounter++;
             } else {
-                li.setAttribute('data-filter', '0');
+                // li.setAttribute('data-filter', '0');
+                li.dataset.filter = 0;
             }
         }
     }
@@ -65,3 +97,4 @@ function filterClips() {
 buttonFilterClips.addEventListener('click', filterClips);
 
 
+document.addEventListener("DOMContentLoaded", readUrlParams());
