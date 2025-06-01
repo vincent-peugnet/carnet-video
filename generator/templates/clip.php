@@ -37,7 +37,7 @@
                 <a href="<?= $basePath ?>/tag/<?= $tag ?>/"><?= $tag ?></a>
             <?php endforeach ?>
             </span>
-        <a class="button" href="<?= $basePath . '/clip/?tags=' . urlencode(implode(' ', $clip->tags)) ?>">✻</a>
+        <a class="button" href="<?= $basePath . '/clip/#' . urlencode(implode(' ', $clip->tags)) ?>">✻</a>
     </div>
 
     <?php if ($movie !== null) : ?>

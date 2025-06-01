@@ -19,12 +19,9 @@ buttonShuffleClips.addEventListener('click', shuffleClips);
 
 
 function readUrlParams() {
-    let params = new URL(document.location).searchParams;
-    let urlTags = params.get("tags");
-    if (urlTags === null) {
-        return;
-    }
-    urlTags = urlTags.split(' ');
+    let hash = document.location.hash;
+    hash = hash.substring(1);
+    let urlTags = hash.split('+');
     for (var urlTag of urlTags) {
         let query = 'input.tag[value="'+urlTag+'"]';
         let tagCheckbox = document.querySelector(query);
@@ -58,11 +55,8 @@ function filterClips() {
 
     // Update URL params
     let path = document.location.pathname;
-    let search = document.location.search;
-    let params = new URLSearchParams(search);
-    params.set('tags', checkedTags.join(' '));
-    search = '?'+params.toString();
-    history.replaceState({}, '', path+search);
+    hash = '#'+checkedTags.join('+');
+    history.replaceState({}, '', path+hash);
 
     // Manage which clips should be displayed or not
     let lis = document.querySelectorAll('ul.clips li');
