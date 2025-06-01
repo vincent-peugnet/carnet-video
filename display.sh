@@ -122,22 +122,23 @@ then
 fi
 case $input in
     t|T)
-        ./clipTags.sh $1
-        ./display.sh $1
+        ./clipTags.sh "$1"
+        ./display.sh "$1"
         exit
         ;;
     c|C)
-        ./clipCollections.sh $1
-        ./display.sh $1
+        ./clipCollections.sh "$1"
+        ./display.sh "$1"
         exit
         ;;
     p|P)
         echo '👁️  play !!'
-        xdg-open src/clips/$1.mkv
+        xdg-open "src/clips/$1.mkv"
+        ./display.sh "$1"
         ;;
     d|D)
-        ./clipDescription.sh $1
-        ./display.sh $1
+        ./clipDescription.sh "$1"
+        ./display.sh "$1"
         exit
         ;;
     m|M)
@@ -159,7 +160,7 @@ case $input in
         clear
         echo '🚕 Type a Clip ID and press enter !'
         read clip
-        ./display.sh $clip
+        ./display.sh "$clip"
         exit
         ;;
     *)
