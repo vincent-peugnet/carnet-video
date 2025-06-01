@@ -66,25 +66,23 @@ done
 
 if test -n "$movieId" -a "$movieId" != 'null'
 then
-    movieIsDefined=1
     if test -f "src/movies/$movieId.json"
     then
         title=$(jq -r .title src/movies/$movieId.json)
         year=$(jq -r .year src/movies/$movieId.json)
         movie="$title - $year   (#$movieId)"
     else
-        movie="#$movieId (type [M] to fetch movie metadata)"
+        movie="#$movieId (no movie data fetched)"
     fi
 else
-    movieIsDefined=0
     movie='❓️'
 fi
 
-if test $aspectRatio = null -o $duration = null -o $color = null
+if test "$aspectRatio" = null -o "$duration" = null -o "$color" = null
 then
-    ./clipMetadata.sh $1
+    ./clipMetadata.sh "$1"
     sleep 1
-    ./display.sh $1
+    ./display.sh "$1"
     exit
 fi
 
@@ -110,7 +108,7 @@ fi
 
 echo -e "\033[1mClip #$1\033[0m   ⏱️  $duration s   ➗ $aspectRatio  🎨 $color  <http://localhost:8066/clip/$1/>"
 echo '🎞️  movie:' $movie
-echo '📄 description:' $description
+echo "📄 description: $description"
 echo '🎟️  tags:' "${tags[@]}"
 echo "📜  collections: ${collections[@]}"
 # echo ------------------------------------------
@@ -118,7 +116,7 @@ echo -e "\e[37m[T]ags [C]ollections [D]escription [M]ovie, [P]lay [←]prev [→
 
 escape_char=$(printf "\u1b")
 read -rsn1 input # get 1 character
-if [[ $input == $escape_char ]]
+if [[ $input == "$escape_char" ]]
 then
     read -rsn2 input # read 2 more chars
 fi
@@ -136,8 +134,6 @@ case $input in
     p|P)
         echo '👁️  play !!'
         xdg-open src/clips/$1.mkv
-        sleep 0.5 
-        ./display.sh $1
         ;;
     d|D)
         ./clipDescription.sh $1
@@ -145,15 +141,8 @@ case $input in
         exit
         ;;
     m|M)
-        if test $movieIsDefined = 1
-        then
-            clear
-            ./fetchMovie.sh "$movieId"
-            ./display.sh $1
-        else
-            ./clipMovie.sh $1
-            ./display.sh $1
-        fi
+        ./clipMovie.sh "$1"
+        ./display.sh "$1"
         exit
         ;;
     '[C')

@@ -1,8 +1,8 @@
 #!/bin/bash
 
-if test -z $1
+if test -z "$1"
 then
-    echo 'Please provide a movie ID string as first argument'
+    echo 'Please provide a movie wikidata ID string as first argument'
     exit 1
 fi
 

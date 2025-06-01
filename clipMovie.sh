@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if test -z $1
+if test -z "$1"
 then
     echo 'missing clip ID as first argument'
     exit 1
