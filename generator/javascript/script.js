@@ -1,5 +1,16 @@
 const buttonShuffleClips = document.querySelector('#shuffleClips');
+const buttonRandomClip = document.querySelector('a#randomClip');
+const buttonFilterClips = document.querySelector('#filterPanel form');
 
+function RandomClip() {
+    let randomClipId = allClips[Math.floor(Math.random() * allClipsCount)];
+    console.log(randomClipId);
+    buttonRandomClip.setAttribute('href', basePath+'/clip/'+randomClipId+'/');
+}
+
+if (buttonRandomClip !== null) {   
+    buttonRandomClip.addEventListener('click', RandomClip);
+}
 
 // Shuffles elements in a list
 // By - Yair Even Or
@@ -14,13 +25,18 @@ function shuffleClips() {
     ul.parentNode.replaceChild(temp, ul); // copy shuffled back to 'ul'
 }
 
-buttonShuffleClips.addEventListener('click', shuffleClips);
+if (buttonShuffleClips !== null) {   
+    buttonShuffleClips.addEventListener('click', shuffleClips);
+}
 
 
 
 function readUrlParams() {
     let hash = document.location.hash;
     hash = hash.substring(1);
+    if (hash.length === 0) {
+        return;
+    }
     let urlTags = hash.split('+');
     for (var urlTag of urlTags) {
         let query = 'input.tag[value="'+urlTag+'"]';
@@ -33,8 +49,6 @@ function readUrlParams() {
 }
 
 
-
-const buttonFilterClips = document.querySelector('#filterPanel form');
 
 function filterClips() {
 
@@ -87,7 +101,9 @@ function filterClips() {
 
 }
 
-buttonFilterClips.addEventListener('click', filterClips);
+if (buttonFilterClips !== null) {   
+    buttonFilterClips.addEventListener('click', filterClips);
+}
 
 
 document.addEventListener("DOMContentLoaded", readUrlParams());

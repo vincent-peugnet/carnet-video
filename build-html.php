@@ -335,6 +335,22 @@ function buildMovies(array $movies, array $clips): void
     file_put_contents("build/movie/index.html", $html);
 }
 
+/**
+ * Generate list of all clips in a const called `allClips` stored in a JS file
+ *
+ * @param Clip[] $clips
+ */
+function buildInfos(Array $clips, string $basePath): void
+{
+    $allClipsCount = count($clips);
+    ksort($clips);
+    $clipIdsJson = json_encode(array_keys($clips));
+    $js = "const allClips = $clipIdsJson;\n";
+    $js.= "const basePath = '$basePath';\n";
+    $js.= "const allClipsCount = $allClipsCount;\n";
+    file_put_contents("build/assets/infos.js", $js);
+}
+
 $clips = getClips();
 $collections = getCollections();
 $collectionsIndex = getCollectionsIdIndex($collections);
@@ -355,6 +371,8 @@ print '.';
 buildMovies($movies, $clips);
 print '.';
 buildAspectRatios($aspectRatios, $clips);
+print '.';
+buildInfos($clips, $basePath);
 print '.';
 
 

@@ -8,7 +8,7 @@ html, body {
 }
 
 body {
-    font-family: "Liberation sans", sans;
+    font-family: "Liberation sans", sans-serif;
     margin: 0 20px;
     background-color: var(--bg-color);
     color: var(--fg-color);

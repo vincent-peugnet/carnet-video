@@ -12,13 +12,16 @@
             <a
                 <?php if ($prev !== null) : ?>
                     href="<?= $basePath ?>/clip/<?= $prev->id ?? '' ?>/"
+                    title="afficher l'extrait précédent"
                 <?php else: ?>
                     class="inactive"
                 <?php endif; ?>
             >◂</a>
+            <a href="#" id="randomClip" title="afficher un extrait au hasard">⚁</a>
             <a
                 <?php if ($next !== null) : ?>
                     href="<?= $basePath ?>/clip/<?= $next->id ?? '' ?>/"
+                    title="afficher l'extrait suivant"
                 <?php else: ?>
                     class="inactive"
                 <?php endif; ?>

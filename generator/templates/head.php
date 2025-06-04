@@ -7,5 +7,6 @@
         <link rel="stylesheet" href="<?= $basePath ?>/assets/<?= $stylesheet ?>">
     <?php endif ?>
     <script src="<?= $basePath ?>/assets/tags.js" defer></script>
+    <script src="<?= $basePath ?>/assets/infos.js" defer></script>
     <script src="<?= $basePath ?>/assets/script.js" defer></script>
 </head>
