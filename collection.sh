@@ -9,7 +9,7 @@
 
 collection=$1
 
-touch collections/$collection
+touch "src/collections/$collection"
 
 i=1
 for clipId in "$@"
@@ -17,7 +17,7 @@ do
     if test $i -ne 1
     then
         echo "Acting on $clipId ..."
-        echo $clipId >> collections/$collection
+        echo "$clipId" >> "src/collections/$collection"
     fi
     i=$((i + 1))
 done
